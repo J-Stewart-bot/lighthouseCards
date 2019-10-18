@@ -4,7 +4,12 @@ $(() => {
     url: "/games"
   }).done((games) => {
     for(game of games.games) {
-      $("<div>").text(game.name).appendTo($("body"));
+      $("<div>").addClass(`${game.name.toLowerCase()}`).text(game.name).appendTo($("body"));
     }
-  });;
+
+    $('.war').click(function() {
+      console.log('weee');
+
+    });
+  });
 });
