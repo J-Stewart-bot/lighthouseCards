@@ -21,5 +21,16 @@ module.exports = (db) => {
           .json({ error: err.message });
       });
   });
+
+  router.get("/:id", (req, res) => {
+    db.query(
+      `SELECT * FROM games
+      WHERE name = $1`, [req.params.id])
+      .then(data => {
+        const game = data.rows[0];
+        res.json({game});
+      })
+  });
+
   return router;
 };
