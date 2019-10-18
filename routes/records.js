@@ -21,5 +21,22 @@ module.exports = (db) => {
           .json({ error: err.message });
       });
   });
+
+  router.get("/:id", (req, res) => {
+    db.query(
+      `SELECT * FROM records
+      WHERE winner = $1`, [req.params.id])
+      .then(data => {
+        const record = data.rows;
+        res.json({ record });
+        // res.render("../views/index");
+      })
+      .catch(err => {
+        res
+          .status(500)
+          .json({ error: err.message });
+      });
+  });
+
   return router;
 };

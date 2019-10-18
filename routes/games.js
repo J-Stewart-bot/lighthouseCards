@@ -30,6 +30,11 @@ module.exports = (db) => {
         const game = data.rows[0];
         res.json({game});
       })
+      .catch(err => {
+        res
+          .status(500)
+          .json({ error: err.message });
+      });
   });
 
   return router;
