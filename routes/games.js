@@ -28,7 +28,7 @@ module.exports = (db) => {
       WHERE name = $1`, [req.params.id])
       .then(data => {
         const game = data.rows[0];
-        res.json({game});
+        res.render(`${req.params.id}`);
       })
       .catch(err => {
         res
