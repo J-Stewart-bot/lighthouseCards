@@ -7,11 +7,11 @@ $(() => {
       $("<div>").addClass(`${game.name.toLowerCase()}`).text(game.name).appendTo($("body"));
     }
     $(`.war`).click(function() {
-      window.location.href = '/games/War';
+      window.open('/games/War');
     });
 
     $(`.goofspiel`).click(function() {
-      window.location.href = '/games/Goofspiel';
+      window.open('/games/Goofspiel');
     });
 
   });
