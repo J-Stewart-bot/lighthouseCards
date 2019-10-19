@@ -6,4 +6,15 @@ body {
   h1 {
     color: #244751;
   }
+
+  div {
+    display: flex;
+    justify-content: center;
+
+    img:hover {
+      transform: scale(2, 2);
+    }
+
+  }
+
 }
