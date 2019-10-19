@@ -3,16 +3,8 @@
       <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-            <a class="navbar-brand" href="/urls">TinyApp</a>
+            <a class="navbar-brand" href="#">Lighthouse Cards!</a>
           </li>
-          <% if (typeof user !== 'undefined') { %>
-          <li class="nav-item">
-            <a class="nav-item nav-link" href="/urls">My URLs</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-item nav-link" href="/urls/new">Create New URL</a>
-          </li>
-          <% } %>
         </ul>
       </div>
       <div class="navbar-collapse collapse dual-collapse2">
@@ -33,13 +25,9 @@
         <% } else { %>
           <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-              <form method="GET" action="/register" class="form-inline my-2 my-lg-0">
-                <a class="nav-item nav-link" href="/register">Register</a>
-              </form>
-            </li>
-            <li class="nav-item active">
               <form method="GET" action="/login" class="form-inline my-2 my-lg-0">
-                <a class="nav-item nav-link" href="/login">Login</a>
+                <input class="nav-item nav-link" name="username">
+                <button type="submit">Login</button>
               </form>
             </li>
           </ul>

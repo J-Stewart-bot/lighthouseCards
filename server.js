@@ -10,6 +10,12 @@ const sass       = require("node-sass-middleware");
 const app        = express();
 const morgan     = require('morgan');
 
+const cookieSession = require('cookie-session');
+app.use(cookieSession({
+  name: 'session',
+  keys: ['key1', 'key2']
+}));
+
 // PG database client/connection setup
 const { Pool } = require('pg');
 const dbParams = require('./lib/db.js');
@@ -53,8 +59,16 @@ app.use("/records", recordsRoutes(db));
 // Warning: avoid creating more routes in this file!
 // Separate them into separate routes files (see above).
 app.get("/", (req, res) => {
+  // let templateVars = {
+  //   username: req.cookies["username"]
+  // };
   res.render("index");
 });
+
+app.get('/login', (req, res) => {
+  req.session.user_id = req.body.username;
+  res.redirect('/');
+})
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);
