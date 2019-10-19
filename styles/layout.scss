@@ -1,7 +1,12 @@
 // See: https://sass-lang.com/
-
+html {
+  height: 100%;
+}
 body {
   background-color: #EEE;
+  display: flex;
+  height: 100%;
+  flex-direction: column;
 
   h1 {
     color: #244751;
@@ -10,10 +15,8 @@ body {
   .container {
     display: flex;
     justify-content: center;
-
-    img:hover {
-      transform: scale(2, 2);
-    }
+    padding: 25px;
+    bottom: 0;
 
     .card {
       margin-left: -25px;
@@ -24,4 +27,11 @@ body {
     }
   }
 
+  .player {
+    margin-top: auto;
+
+    img:hover {
+      transform: scale(1.5, 1.5);
+    }
+  }
 }
