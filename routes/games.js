@@ -28,7 +28,10 @@ module.exports = (db) => {
       WHERE name = $1`, [req.params.id])
       .then(data => {
         const game = data.rows[0];
-        res.render(`${req.params.id}`);
+        let templateVars = {
+          username: req.session.user_id
+        };
+        res.render(`${req.params.id}`, templateVars);
       })
       .catch(err => {
         res

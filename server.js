@@ -59,14 +59,19 @@ app.use("/records", recordsRoutes(db));
 // Warning: avoid creating more routes in this file!
 // Separate them into separate routes files (see above).
 app.get("/", (req, res) => {
-  // let templateVars = {
-  //   username: req.cookies["username"]
-  // };
-  res.render("index");
+  let templateVars = {
+    username: req.session.user_id
+  };
+  res.render("index", templateVars);
 });
 
-app.get('/login', (req, res) => {
+app.post('/login', (req, res) => {
   req.session.user_id = req.body.username;
+  res.redirect('/');
+})
+
+app.post('/logout', (req, res) => {
+  req.session = null;
   res.redirect('/');
 })
 
