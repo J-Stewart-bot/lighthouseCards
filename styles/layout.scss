@@ -1,20 +1,37 @@
 // See: https://sass-lang.com/
-
+html {
+  height: 100%;
+}
 body {
   background-color: #EEE;
+  display: flex;
+  height: 100%;
+  flex-direction: column;
 
   h1 {
     color: #244751;
   }
 
-  div {
+  .container {
     display: flex;
     justify-content: center;
+    padding: 25px;
+    bottom: 0;
 
-    img:hover {
-      transform: scale(2, 2);
+    .card {
+      margin-left: -25px;
     }
 
+    .card:first-of-type {
+      margin-left: 0;
+    }
   }
 
+  .player {
+    margin-top: auto;
+
+    img:hover {
+      transform: scale(1.5, 1.5);
+    }
+  }
 }
