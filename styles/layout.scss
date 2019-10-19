@@ -40,8 +40,9 @@ body {
       visibility: hidden;
     }
 
-    img:hover {
+    img:hover, .selected {
       transform: scale(1.5, 1.5);
+
     }
   }
 
