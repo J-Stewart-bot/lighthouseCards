@@ -10,10 +10,20 @@ const router  = express.Router();
 
 module.exports = (db) => {
   router.get("/", (req, res) => {
-    db.query(`SELECT * FROM records;`)
+    db.query(`
+      SELECT winner AS name, COUNT(winner) AS wins
+      FROM records
+      GROUP BY winner
+      ORDER BY winner;
+      `)
       .then(data => {
         const records = data.rows;
-        res.json({ records });
+        console.log(data);
+        let templateVars = {
+          username: req.session.user_id,
+          records
+        };
+        res.render('../views/records', templateVars);
       })
       .catch(err => {
         res
