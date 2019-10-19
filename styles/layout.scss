@@ -34,4 +34,17 @@ body {
       transform: scale(1.5, 1.5);
     }
   }
+
+  .prizes {
+    display: flex;
+    justify-content: space-evenly;
+    width: 50%;
+    margin-top: auto;
+    margin-bottom: auto;
+
+    .prize:hover {
+      transform: scale(1.5, 1.5);
+    }
+  }
+
 }
