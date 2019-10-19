@@ -16,7 +16,11 @@ body {
     display: flex;
     justify-content: center;
     padding: 25px;
-    bottom: 0;
+
+    img {
+      width: 64px;
+      height: 89px;
+    }
 
     .card {
       margin-left: -25px;
@@ -28,7 +32,13 @@ body {
   }
 
   .player {
-    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+
+    #confirm {
+      align-self: center;
+      visibility: hidden;
+    }
 
     img:hover {
       transform: scale(1.5, 1.5);
@@ -37,10 +47,18 @@ body {
 
   .prizes {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center;
     width: 50%;
     margin-top: auto;
     margin-bottom: auto;
+
+    .deck {
+      margin: 2px;
+    }
+
+    .prize {
+      margin: 2px;
+    }
 
     .prize:hover {
       transform: scale(1.5, 1.5);
