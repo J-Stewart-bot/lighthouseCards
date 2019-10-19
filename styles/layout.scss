@@ -7,7 +7,7 @@ body {
     color: #244751;
   }
 
-  div {
+  .container {
     display: flex;
     justify-content: center;
 
@@ -15,6 +15,13 @@ body {
       transform: scale(2, 2);
     }
 
+    .card {
+      margin-left: -25px;
+    }
+
+    .card:first-of-type {
+      margin-left: 0;
+    }
   }
 
 }
