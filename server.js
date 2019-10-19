@@ -77,23 +77,24 @@ app.post('/logout', (req, res) => {
   res.redirect('/');
 })
 
-io.sockets.on('connection', function(socket) {
+const onConnect = function(socket) {
   socket.on('username', function(username) {
-      socket.username = username;
-      console.log(username);
-      io.emit('is_online', '🔵 <i>' + socket.username + ' join the chat..</i>');
+    socket.username = username;
+    console.log(username);
+    socket.broadcast.emit('turn', username);
   });
 
-  socket.on('disconnect', function(username) {
-      io.emit('is_online', '🔴 <i>' + socket.username + ' left the chat..</i>');
+  socket.on('turn', function(username) {
+    socket.broadcast.emit('turn', username);
   })
 
   socket.on('chat_message', function(message) {
-      io.emit('chat_message', '<strong>' + socket.username + '</strong>: ' + message);
+    io.emit('chat_message', '<strong>' + socket.username + '</strong>: ' + message);
   });
 
-});
+};
 
+io.on('connect', onConnect);
 
 http.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);
