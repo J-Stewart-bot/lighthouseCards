@@ -12,11 +12,24 @@ $(() => {
     document.title = "!!";
   });
 
+  socket.on('prize', function(prize) {
+    console.log(prize);
+  });
+
+  socket.on('split', function() {
+    console.log('split');
+  });
+
+  socket.on('win', function(msg) {
+    console.log(msg);
+  });
+
   $('#confirm').click(() => {
     $('#confirm').css('visibility', 'hidden');
-    $('.player > .container').find('.selected').remove();
+    const card = $('.player > .container').find('.selected').remove().attr('id');
+    console.log(card);
     document.title = "Goofspiel";
-    socket.emit('turn', username);
+    socket.emit('turn', username, card);
   })
 
   $('.player > .container > .card').click(function() {

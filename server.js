@@ -77,14 +77,44 @@ app.post('/logout', (req, res) => {
   res.redirect('/');
 })
 
+let p1;
+let p2;
+
+const prizes = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+let currentPrize = prizes[Math.round(Math.random() * (prizes.length - 1))];
+
 const onConnect = function(socket) {
   socket.on('username', function(username) {
     socket.username = username;
-    console.log(username);
+    if (p1 === undefined) {
+      console.log('p1');
+      p1 = socket;
+    } else {
+      console.log('p2');
+      p2 = socket;
+    }
+    socket.emit('prize', currentPrize);
     socket.broadcast.emit('turn', username);
   });
 
-  socket.on('turn', function(username) {
+  socket.on('turn', function(username, card) {
+    if (p1.card === undefined) {
+      console.log('p1 card', card);
+      p1.card = card;
+    } else if (p2.card === undefined) {
+      console.log('p2 card', card);
+      console.log('p1 card', p1.card);
+      if (Number(p1.card) > Number(card)) {
+        console.log(p1.card);
+        io.to(`${p1.id}`).emit('win', 'weee');
+      } else if (Number(p1.card) < Number(card)) {
+        io.to(`${p2.id}`).emit('win', 'weee');
+      } else {
+        io.to(`${p1.id}`).emit('split');
+        io.to(`${p2.id}`).emit('split');
+      }
+      p1.card = undefined;
+    }
     socket.broadcast.emit('turn', username);
   })
 
