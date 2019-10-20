@@ -12,6 +12,8 @@ const http       = require('http').Server(app);
 const io         = require('socket.io')(http);
 const morgan     = require('morgan');
 
+const listenForConnection = require('./games/games');
+
 const cookieSession = require('cookie-session');
 app.use(cookieSession({
   name: 'session',
@@ -77,74 +79,7 @@ app.post('/logout', (req, res) => {
   res.redirect('/');
 })
 
-let p1;
-let p2;
-
-const prizes = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
-let value = Math.round(Math.random() * (prizes.length - 1));
-let currentPrize = prizes[value];
-prizes.splice(value, 1);
-
-const onConnect = function(socket) {
-  socket.on('username', function(username) {
-    socket.username = username;
-    socket.score = 0;
-    if (p1 === undefined) {
-      console.log('p1');
-      p1 = socket;
-    } else {
-      console.log('p2');
-      p2 = socket;
-      io.emit('prize', currentPrize);
-      socket.broadcast.emit('turn', username);
-    }
-  });
-
-  socket.on('turn', function(username, card) {
-    if (p1.card === undefined) {
-      p1.card = card;
-    } else if (p2.card === undefined) {
-      if (p1.card > card) {
-        p1.score += currentPrize;
-        io.to(`${p1.id}`).emit('score', p1.score, p2.score);
-        io.to(`${p2.id}`).emit('score', p2.score, p1.score);
-
-      } else if (p1.card < card) {
-        p2.score += currentPrize;
-        io.to(`${p1.id}`).emit('score', p1.score, p2.score);
-        io.to(`${p2.id}`).emit('score', p2.score, p1.score);
-      } else {
-        p1.score += currentPrize / 2;
-        p2.score += currentPrize / 2;
-        io.to(`${p1.id}`).emit('score', p1.score, p2.score);
-        io.to(`${p2.id}`).emit('score', p2.score, p1.score);
-      }
-      p1.card = undefined;
-      if (prizes.length > 0) {
-        value = Math.round(Math.random() * (prizes.length - 1));
-        currentPrize = prizes[value];
-        prizes.splice(value, 1);
-        io.emit('prize', currentPrize);
-      } else {
-        if (p1.score > p2.score) {
-          io.to(`${p1.id}`).emit('score', 'winner', 'loser');
-          io.to(`${p2.id}`).emit('score', 'loser', 'winner');
-        } else {
-          io.to(`${p1.id}`).emit('score', 'loser', 'winner');
-          io.to(`${p2.id}`).emit('score', 'winner', 'loser');
-        }
-      }
-    }
-    socket.broadcast.emit('turn', username);
-  })
-
-  socket.on('chat_message', function(message) {
-    io.emit('chat_message', '<strong>' + socket.username + '</strong>: ' + message);
-  });
-
-};
-
-io.on('connect', onConnect);
+listenForConnection(io);
 
 http.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`);
