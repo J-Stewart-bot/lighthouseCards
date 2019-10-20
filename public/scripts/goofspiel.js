@@ -14,6 +14,17 @@ $(() => {
 
   socket.on('prize', function(prize) {
     console.log(prize);
+    if (prize === 13) {
+      $('.prize > img').attr('src', '/cards/KD.png');
+    } else if (prize === 12) {
+      $('.prize > img').attr('src', '/cards/QD.png');
+    } else if (prize === 11) {
+      $('.prize > img').attr('src', '/cards/JD.png');
+    } else if (prize > 1) {
+      $('.prize > img').attr('src', `/cards/${prize}D.png`);
+    } else {
+      $('.prize > img').attr('src', '/cards/AD.png');
+    }
   });
 
   socket.on('split', function() {

@@ -81,7 +81,11 @@ let p1;
 let p2;
 
 const prizes = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
-let currentPrize = prizes[Math.round(Math.random() * (prizes.length - 1))];
+let value = Math.round(Math.random() * (prizes.length - 1));
+let currentPrize = prizes[value];
+prizes.splice(value, 1);
+console.log(prizes);
+
 
 const onConnect = function(socket) {
   socket.on('username', function(username) {
@@ -114,6 +118,12 @@ const onConnect = function(socket) {
         io.to(`${p2.id}`).emit('split');
       }
       p1.card = undefined;
+      value = Math.round(Math.random() * (prizes.length - 1));
+      currentPrize = prizes[value];
+      prizes.splice(value, 1);
+      console.log(prizes);
+      io.to(`${p1.id}`).emit('prize', currentPrize);
+      io.to(`${p2.id}`).emit('prize', currentPrize);
     }
     socket.broadcast.emit('turn', username);
   })
