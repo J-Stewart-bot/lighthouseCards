@@ -35,10 +35,19 @@ body {
     display: flex;
     flex-direction: column;
 
-    #confirm {
+    header {
+      width: 50%;
       align-self: center;
-      visibility: hidden;
+      display: flex;
+      justify-content: center;
+
+      #confirm {
+        visibility: hidden;
+        margin-right: 75px;
+      }
+
     }
+
 
     img:hover, .selected {
       transform: scale(1.5, 1.5);

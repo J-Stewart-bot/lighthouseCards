@@ -31,18 +31,18 @@ $(() => {
     console.log('split');
   });
 
-  socket.on('win', function(msg) {
-    console.log(msg);
+  socket.on('win', function(points) {
+    let currentScore = $('#score').text();
+    console.log(currentScore);
+    $('#score').text(Number(currentScore) + points);
   });
 
   $('#confirm').click(() => {
     const card = $('.player > .container').find('.selected').remove().attr('id');
-    console.log(card);
     if (card) {
       $('#confirm').css('visibility', 'hidden');
-      console.log(card);
       document.title = "Goofspiel";
-      socket.emit('turn', username, card);
+      socket.emit('turn', username, Number(card));
     }
   })
 

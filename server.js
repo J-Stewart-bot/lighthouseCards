@@ -84,8 +84,6 @@ const prizes = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
 let value = Math.round(Math.random() * (prizes.length - 1));
 let currentPrize = prizes[value];
 prizes.splice(value, 1);
-console.log(prizes);
-
 
 const onConnect = function(socket) {
   socket.on('username', function(username) {
@@ -97,33 +95,26 @@ const onConnect = function(socket) {
       console.log('p2');
       p2 = socket;
     }
-    socket.emit('prize', currentPrize);
+    io.emit('prize', currentPrize);
     socket.broadcast.emit('turn', username);
   });
 
   socket.on('turn', function(username, card) {
     if (p1.card === undefined) {
-      console.log('p1 card', card);
       p1.card = card;
     } else if (p2.card === undefined) {
-      console.log('p2 card', card);
-      console.log('p1 card', p1.card);
-      if (Number(p1.card) > Number(card)) {
-        console.log(p1.card);
-        io.to(`${p1.id}`).emit('win', 'weee');
-      } else if (Number(p1.card) < Number(card)) {
-        io.to(`${p2.id}`).emit('win', 'weee');
+      if (p1.card > card) {
+        io.to(`${p1.id}`).emit('win', currentPrize);
+      } else if (p1.card < card) {
+        io.to(`${p2.id}`).emit('win', currentPrize);
       } else {
-        io.to(`${p1.id}`).emit('split');
-        io.to(`${p2.id}`).emit('split');
+        io.emit('split');
       }
       p1.card = undefined;
       value = Math.round(Math.random() * (prizes.length - 1));
       currentPrize = prizes[value];
       prizes.splice(value, 1);
-      console.log(prizes);
-      io.to(`${p1.id}`).emit('prize', currentPrize);
-      io.to(`${p2.id}`).emit('prize', currentPrize);
+      io.emit('prize', currentPrize);
     }
     socket.broadcast.emit('turn', username);
   })
