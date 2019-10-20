@@ -27,6 +27,10 @@ $(() => {
     }
   });
 
+  socket.on('score', function(p1, p2) {
+    $('#score').text(p1);
+  });
+
   socket.on('win', function(points) {
     let currentScore = $('#score').text();
     console.log(currentScore);

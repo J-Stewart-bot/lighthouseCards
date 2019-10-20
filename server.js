@@ -88,15 +88,16 @@ prizes.splice(value, 1);
 const onConnect = function(socket) {
   socket.on('username', function(username) {
     socket.username = username;
+    socket.score = 0;
     if (p1 === undefined) {
       console.log('p1');
       p1 = socket;
     } else {
       console.log('p2');
       p2 = socket;
+      io.emit('prize', currentPrize);
+      socket.broadcast.emit('turn', username);
     }
-    io.emit('prize', currentPrize);
-    socket.broadcast.emit('turn', username);
   });
 
   socket.on('turn', function(username, card) {
@@ -104,17 +105,35 @@ const onConnect = function(socket) {
       p1.card = card;
     } else if (p2.card === undefined) {
       if (p1.card > card) {
-        io.to(`${p1.id}`).emit('win', currentPrize);
+        p1.score += currentPrize;
+        io.to(`${p1.id}`).emit('score', p1.score, p2.score);
+        io.to(`${p2.id}`).emit('score', p2.score, p1.score);
+
       } else if (p1.card < card) {
-        io.to(`${p2.id}`).emit('win', currentPrize);
+        p2.score += currentPrize;
+        io.to(`${p1.id}`).emit('score', p1.score, p2.score);
+        io.to(`${p2.id}`).emit('score', p2.score, p1.score);
       } else {
-        io.emit('win', currentPrize / 2);
+        p1.score += currentPrize / 2;
+        p2.score += currentPrize / 2;
+        io.to(`${p1.id}`).emit('score', p1.score, p2.score);
+        io.to(`${p2.id}`).emit('score', p2.score, p1.score);
       }
       p1.card = undefined;
-      value = Math.round(Math.random() * (prizes.length - 1));
-      currentPrize = prizes[value];
-      prizes.splice(value, 1);
-      io.emit('prize', currentPrize);
+      if (prizes.length > 0) {
+        value = Math.round(Math.random() * (prizes.length - 1));
+        currentPrize = prizes[value];
+        prizes.splice(value, 1);
+        io.emit('prize', currentPrize);
+      } else {
+        if (p1.score > p2.score) {
+          io.to(`${p1.id}`).emit('score', 'winner', 'loser');
+          io.to(`${p2.id}`).emit('score', 'loser', 'winner');
+        } else {
+          io.to(`${p1.id}`).emit('score', 'loser', 'winner');
+          io.to(`${p2.id}`).emit('score', 'winner', 'loser');
+        }
+      }
     }
     socket.broadcast.emit('turn', username);
   })
