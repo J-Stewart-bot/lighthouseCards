@@ -108,7 +108,7 @@ const onConnect = function(socket) {
       } else if (p1.card < card) {
         io.to(`${p2.id}`).emit('win', currentPrize);
       } else {
-        io.emit('split');
+        io.emit('win', currentPrize / 2);
       }
       p1.card = undefined;
       value = Math.round(Math.random() * (prizes.length - 1));

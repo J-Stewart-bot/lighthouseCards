@@ -27,10 +27,6 @@ $(() => {
     }
   });
 
-  socket.on('split', function() {
-    console.log('split');
-  });
-
   socket.on('win', function(points) {
     let currentScore = $('#score').text();
     console.log(currentScore);
