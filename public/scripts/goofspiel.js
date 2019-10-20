@@ -36,11 +36,14 @@ $(() => {
   });
 
   $('#confirm').click(() => {
-    $('#confirm').css('visibility', 'hidden');
     const card = $('.player > .container').find('.selected').remove().attr('id');
     console.log(card);
-    document.title = "Goofspiel";
-    socket.emit('turn', username, card);
+    if (card) {
+      $('#confirm').css('visibility', 'hidden');
+      console.log(card);
+      document.title = "Goofspiel";
+      socket.emit('turn', username, card);
+    }
   })
 
   $('.player > .container > .card').click(function() {
