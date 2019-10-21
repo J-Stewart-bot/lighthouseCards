@@ -1,9 +1,18 @@
 class Goofspiel {
   constructor() {
+    this.id;
     this.playerOne;
     this.playerTwo;
     this.prizes = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
     this.currentPrize = -1;
+  }
+
+  get gameId() {
+    return this.id;
+  }
+
+  setGameId(id) {
+    this.id = id;
   }
 
   get getPlayerOne() {

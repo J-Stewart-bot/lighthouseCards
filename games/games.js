@@ -1,63 +1,74 @@
 const Goofspiel = require('./goofspiel/goofspiel');
 
-const game = new Goofspiel();
+const games = {};
+let game;
 let io;
 
 const onConnect = function(socket) {
-
-  // if (game.getPlayerOne === undefined) {
-  // } else if (game.getPlayerTwo === undefined) {
-  // } else {
-  //   console.log('Game full!');
-  // }
+  if(game === undefined) {
+    game = new Goofspiel();
+  }
 
   socket.on('username', function(username) {
     socket.username = username;
+    socket.card = undefined;
     socket.score = 0;
     if (game.getPlayerOne === undefined) {
       console.log('p1');
+      game.setGameId(socket.id);
       game.setPlayerOne(socket);
+      socket.gameId = game.gameId;
+      socket.playerOne = true;
     } else {
       console.log('p2');
       game.setPlayerTwo(socket);
-      io.emit('prize', game.newPrize());
-      socket.broadcast.emit('turn', username);
+      socket.gameId = game.gameId;
+      socket.turn = game.gameId;
+      game.getPlayerOne.turn = socket.id;
+      io.to(`${game.getPlayerOne.id}`).emit('prize', game.newPrize());
+      io.to(`${game.getPlayerTwo.id}`).emit('prize', game.getCurrentPrize);
+      io.to(`${game.getPlayerOne.id}`).emit('turn', username);
+
+      games[game.gameId] = Object.assign( Object.create( Object.getPrototypeOf(game)), game);
+      game = undefined;
     }
   });
 
   socket.on('turn', function(username, card) {
-    if (game.getPlayerOne.card === undefined) {
-      game.getPlayerOne.card = card;
-    } else if (game.getPlayerTwo.card === undefined) {
-      if (game.getPlayerOne.card > card) {
-        game.getPlayerOne.score += game.getCurrentPrize;
-        io.to(`${game.getPlayerOne.id}`).emit('score', game.getPlayerOne.score, game.getPlayerTwo.score);
-        io.to(`${game.getPlayerTwo.id}`).emit('score', game.getPlayerTwo.score, game.getPlayerOne.score);
 
-      } else if (game.getPlayerOne.card < card) {
-        game.getPlayerTwo.score += game.getCurrentPrize;
-        io.to(`${game.getPlayerOne.id}`).emit('score', game.getPlayerOne.score, game.getPlayerTwo.score);
-        io.to(`${game.getPlayerTwo.id}`).emit('score', game.getPlayerTwo.score, game.getPlayerOne.score);
+    if (games[socket.gameId].getPlayerOne.card === undefined) {
+      games[socket.gameId].getPlayerOne.card = card;
+    } else if (games[socket.gameId].getPlayerTwo.card === undefined) {
+      if (games[socket.gameId].getPlayerOne.card > card) {
+        games[socket.gameId].getPlayerOne.score += games[socket.gameId].getCurrentPrize;
+        io.to(`${games[socket.gameId].getPlayerOne.id}`).emit('score', games[socket.gameId].getPlayerOne.score, games[socket.gameId].getPlayerTwo.score);
+        io.to(`${games[socket.gameId].getPlayerTwo.id}`).emit('score', games[socket.gameId].getPlayerTwo.score, games[socket.gameId].getPlayerOne.score);
+
+      } else if (games[socket.gameId].getPlayerOne.card < card) {
+        games[socket.gameId].getPlayerTwo.score += games[socket.gameId].getCurrentPrize;
+        io.to(`${games[socket.gameId].getPlayerOne.id}`).emit('score', games[socket.gameId].getPlayerOne.score, games[socket.gameId].getPlayerTwo.score);
+        io.to(`${games[socket.gameId].getPlayerTwo.id}`).emit('score', games[socket.gameId].getPlayerTwo.score, games[socket.gameId].getPlayerOne.score);
       } else {
-        game.getPlayerOne.score += game.getCurrentPrize / 2;
-        game.getPlayerTwo.score += game.getCurrentPrize / 2;
-        io.to(`${game.getPlayerOne.id}`).emit('score', game.getPlayerOne.score, game.getPlayerTwo.score);
-        io.to(`${game.getPlayerTwo.id}`).emit('score', game.getPlayerTwo.score, game.getPlayerOne.score);
+        games[socket.gameId].getPlayerOne.score += games[socket.gameId].getCurrentPrize / 2;
+        games[socket.gameId].getPlayerTwo.score += games[socket.gameId].getCurrentPrize / 2;
+        io.to(`${games[socket.gameId].getPlayerOne.id}`).emit('score', games[socket.gameId].getPlayerOne.score, games[socket.gameId].getPlayerTwo.score);
+        io.to(`${games[socket.gameId].getPlayerTwo.id}`).emit('score', games[socket.gameId].getPlayerTwo.score, games[socket.gameId].getPlayerOne.score);
       }
-      game.getPlayerOne.card = undefined;
-      if (!game.gameOver()) {
-        io.emit('prize', game.newPrize());
+      games[socket.gameId].getPlayerOne.card = undefined;
+      if (!games[socket.gameId].gameOver()) {
+        io.to(`${games[socket.gameId].getPlayerOne.id}`).emit('prize', games[socket.gameId].newPrize());
+        io.to(`${games[socket.gameId].getPlayerTwo.id}`).emit('prize', games[socket.gameId].getCurrentPrize);
       } else {
-        if (game.getPlayerOne.score > game.getPlayerTwo.score) {
-          io.to(`${game.getPlayerOne.id}`).emit('score', 'winner', 'loser');
-          io.to(`${game.getPlayerTwo.id}`).emit('score', 'loser', 'winner');
+        if (games[socket.gameId].getPlayerOne.score > games[socket.gameId].getPlayerTwo.score) {
+          io.to(`${games[socket.gameId].getPlayerOne.id}`).emit('score', 'winner', 'loser');
+          io.to(`${games[socket.gameId].getPlayerTwo.id}`).emit('score', 'loser', 'winner');
         } else {
-          io.to(`${game.getPlayerOne.id}`).emit('score', 'loser', 'winner');
-          io.to(`${game.getPlayerTwo.id}`).emit('score', 'winner', 'loser');
+          io.to(`${games[socket.gameId].getPlayerOne.id}`).emit('score', 'loser', 'winner');
+          io.to(`${games[socket.gameId].getPlayerTwo.id}`).emit('score', 'winner', 'loser');
         }
       }
     }
-    socket.broadcast.emit('turn', username);
+    socket.broadcast.to(socket.turn).emit('turn', username);
   })
 
   socket.on('chat_message', function(message) {
