@@ -42,13 +42,51 @@ class Goofspiel {
     return this.currentPrize;
   }
 
-  gameOver() {
+  isGameOver() {
     if (this.prizes.length <= 0) {
       return true;
     }
 
     return false;
   }
+
+  takeTurn(io, socket, username, card) {
+    if (this.getPlayerOne.card === undefined) {
+      this.getPlayerOne.card = card;
+    } else {
+      if (this.getPlayerOne.card > card) {
+        this.getPlayerOne.score += this.getCurrentPrize;
+        io.to(`${this.getPlayerOne.id}`).emit('score', this.getPlayerOne.score, this.getPlayerTwo.score);
+        io.to(`${this.getPlayerTwo.id}`).emit('score', this.getPlayerTwo.score, this.getPlayerOne.score);
+
+      } else if (this.getPlayerOne.card < card) {
+        this.getPlayerTwo.score += this.getCurrentPrize;
+        io.to(`${this.getPlayerOne.id}`).emit('score', this.getPlayerOne.score, this.getPlayerTwo.score);
+        io.to(`${this.getPlayerTwo.id}`).emit('score', this.getPlayerTwo.score, this.getPlayerOne.score);
+      } else {
+        this.getPlayerOne.score += this.getCurrentPrize / 2;
+        this.getPlayerTwo.score += this.getCurrentPrize / 2;
+        io.to(`${this.getPlayerOne.id}`).emit('score', this.getPlayerOne.score, this.getPlayerTwo.score);
+        io.to(`${this.getPlayerTwo.id}`).emit('score', this.getPlayerTwo.score, this.getPlayerOne.score);
+      }
+      this.getPlayerOne.card = undefined;
+      if (!this.isGameOver()) {
+        io.to(`${this.getPlayerOne.id}`).emit('prize', this.newPrize());
+        io.to(`${this.getPlayerTwo.id}`).emit('prize', this.getCurrentPrize);
+      } else {
+        if (this.getPlayerOne.score > this.getPlayerTwo.score) {
+          io.to(`${this.getPlayerOne.id}`).emit('score', 'winner', 'loser');
+          io.to(`${this.getPlayerTwo.id}`).emit('score', 'loser', 'winner');
+        } else {
+          io.to(`${this.getPlayerOne.id}`).emit('score', 'loser', 'winner');
+          io.to(`${this.getPlayerTwo.id}`).emit('score', 'winner', 'loser');
+        }
+
+      }
+    }
+  socket.broadcast.to(socket.turn).emit('turn', username);
+  }
+
 }
 
 module.exports = Goofspiel;

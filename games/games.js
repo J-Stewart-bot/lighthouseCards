@@ -34,45 +34,9 @@ const onConnect = function(socket) {
   });
 
   socket.on('turn', function(username, card) {
-
-    if (games[socket.gameId].getPlayerOne.card === undefined) {
-      games[socket.gameId].getPlayerOne.card = card;
-    } else if (games[socket.gameId].getPlayerTwo.card === undefined) {
-      if (games[socket.gameId].getPlayerOne.card > card) {
-        games[socket.gameId].getPlayerOne.score += games[socket.gameId].getCurrentPrize;
-        io.to(`${games[socket.gameId].getPlayerOne.id}`).emit('score', games[socket.gameId].getPlayerOne.score, games[socket.gameId].getPlayerTwo.score);
-        io.to(`${games[socket.gameId].getPlayerTwo.id}`).emit('score', games[socket.gameId].getPlayerTwo.score, games[socket.gameId].getPlayerOne.score);
-
-      } else if (games[socket.gameId].getPlayerOne.card < card) {
-        games[socket.gameId].getPlayerTwo.score += games[socket.gameId].getCurrentPrize;
-        io.to(`${games[socket.gameId].getPlayerOne.id}`).emit('score', games[socket.gameId].getPlayerOne.score, games[socket.gameId].getPlayerTwo.score);
-        io.to(`${games[socket.gameId].getPlayerTwo.id}`).emit('score', games[socket.gameId].getPlayerTwo.score, games[socket.gameId].getPlayerOne.score);
-      } else {
-        games[socket.gameId].getPlayerOne.score += games[socket.gameId].getCurrentPrize / 2;
-        games[socket.gameId].getPlayerTwo.score += games[socket.gameId].getCurrentPrize / 2;
-        io.to(`${games[socket.gameId].getPlayerOne.id}`).emit('score', games[socket.gameId].getPlayerOne.score, games[socket.gameId].getPlayerTwo.score);
-        io.to(`${games[socket.gameId].getPlayerTwo.id}`).emit('score', games[socket.gameId].getPlayerTwo.score, games[socket.gameId].getPlayerOne.score);
-      }
-      games[socket.gameId].getPlayerOne.card = undefined;
-      if (!games[socket.gameId].gameOver()) {
-        io.to(`${games[socket.gameId].getPlayerOne.id}`).emit('prize', games[socket.gameId].newPrize());
-        io.to(`${games[socket.gameId].getPlayerTwo.id}`).emit('prize', games[socket.gameId].getCurrentPrize);
-      } else {
-        if (games[socket.gameId].getPlayerOne.score > games[socket.gameId].getPlayerTwo.score) {
-          io.to(`${games[socket.gameId].getPlayerOne.id}`).emit('score', 'winner', 'loser');
-          io.to(`${games[socket.gameId].getPlayerTwo.id}`).emit('score', 'loser', 'winner');
-        } else {
-          io.to(`${games[socket.gameId].getPlayerOne.id}`).emit('score', 'loser', 'winner');
-          io.to(`${games[socket.gameId].getPlayerTwo.id}`).emit('score', 'winner', 'loser');
-        }
-      }
-    }
-    socket.broadcast.to(socket.turn).emit('turn', username);
+    games[socket.gameId].takeTurn(io, socket, username, card);
   })
 
-  socket.on('chat_message', function(message) {
-    io.emit('chat_message', '<strong>' + socket.username + '</strong>: ' + message);
-  });
 
 };
 
