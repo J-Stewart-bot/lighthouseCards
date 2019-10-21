@@ -104,6 +104,11 @@ $(() => {
     }
   })
 
+  socket.on('exit', function() {
+    console.log('run');
+    window.location.href = "/";
+  });
+
   $('.player > .container > .card').click(function() {
     let clicked = $(`#${this.id}`).hasClass("selected");
     $(".card").removeClass("selected");
@@ -115,4 +120,13 @@ $(() => {
     }
   })
 
+  $('#exit').click(() => {
+    const response = confirm("Are you sure you want to leave?");
+
+    if (response) {
+      socket.emit('left', username);
+      console.log('bye');
+      //close window or something
+    }
+  })
 });

@@ -1,7 +1,7 @@
 class Goofspiel {
   constructor() {
     this.id;
-    this.gameType = 1;
+    this.inProgress = true;
     this.playerOne;
     this.playerTwo;
     this.prizes = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
@@ -51,6 +51,11 @@ class Goofspiel {
     return false;
   }
 
+  gameOver() {
+    this.inProgress = false;
+  }
+
+
   takeTurn(io, socket, username, card) {
     if (this.getPlayerOne.card === undefined) {
       this.getPlayerOne.card = card;
@@ -88,6 +93,21 @@ class Goofspiel {
       }
     }
   socket.broadcast.to(socket.turn).emit('turn', username);
+  }
+
+  left(io, socket) {
+    if (this.inProgress) {
+      if (this.playerOne.id === socket.id) {
+        io.to(`${this.getPlayerTwo.id}`).emit('score', 'winner', 'loser');
+        io.to(`${this.getPlayerOne.id}`).emit('exit');
+      } else {
+        io.to(`${this.getPlayerOne.id}`).emit('score', 'winner', 'loser');
+        io.to(`${this.getPlayerTwo.id}`).emit('exit');
+      }
+
+      this.gameOver();
+    }
+
   }
 
 }

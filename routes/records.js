@@ -14,13 +14,14 @@ module.exports = (db) => {
       SELECT winner AS name, COUNT(winner) AS wins
       FROM records
       GROUP BY winner
-      ORDER BY winner;
+      ORDER BY wins DESC;
       `)
       .then(data => {
         const records = data.rows;
         console.log(data);
         let templateVars = {
           username: req.session.user_id,
+          gamename: '',
           records
         };
         res.render('../views/records', templateVars);
@@ -48,22 +49,21 @@ module.exports = (db) => {
       });
   });
 
+  router.post("/", (req, res) => {
+    db.query(`
+      INSERT INTO records (winner, loser, game_id)
+      VALUES ($1, $2, $3)
+      RETURNING *;
+      `, [req.body.winner, req.body.loser, req.body.gameId])
+      .then(res => {
+      })
+      .catch(err => {
+        res
+          .status(500)
+          .json({ error: err.message });
+      });
+  });
+
   return router;
 };
 
-router.post("/", (req, res) => {
-  console.log(req.body);
-  db.query(`
-    INSERT INTO records (winner, loser, game_id)
-    VALUES ($1, $2, $3)
-    RETURNING *;
-    `, [req.body.winner, req.body.loser, req.body.gameId])
-    .then(res => {
-      console.log(res);
-    })
-    .catch(err => {
-      res
-        .status(500)
-        .json({ error: err.message });
-    });
-});
