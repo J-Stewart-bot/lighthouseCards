@@ -52,12 +52,12 @@ module.exports = (db) => {
 };
 
 router.post("/", (req, res) => {
-  console.log(req);
+  console.log(req.body);
   db.query(`
     INSERT INTO records (winner, loser, game_id)
     VALUES ($1, $2, $3)
     RETURNING *;
-    `, [req.body.winner, req.body.loser, req.body.game_id])
+    `, [req.body.winner, req.body.loser, req.body.gameId])
     .then(res => {
       console.log(res);
     })

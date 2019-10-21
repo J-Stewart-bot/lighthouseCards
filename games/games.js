@@ -26,6 +26,9 @@ const onConnect = function(socket) {
       game.getPlayerOne.turn = socket.id;
       io.to(`${game.getPlayerOne.id}`).emit('prize', game.newPrize());
       io.to(`${game.getPlayerTwo.id}`).emit('prize', game.getCurrentPrize);
+      io.to(`${game.getPlayerOne.id}`).emit('opponent', game.getPlayerTwo.username);
+      io.to(`${game.getPlayerTwo.id}`).emit('opponent', game.getPlayerOne.username);
+
       io.to(`${game.getPlayerOne.id}`).emit('turn', username);
 
       games[game.gameId] = Object.assign( Object.create( Object.getPrototypeOf(game)), game);

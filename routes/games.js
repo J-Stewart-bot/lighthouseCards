@@ -30,7 +30,8 @@ module.exports = (db) => {
         const game = data.rows[0];
         let templateVars = {
           username: req.session.user_id,
-          gamename: game.name
+          gamename: game.name,
+          gameId: game.id
         };
         res.render(`${req.params.id}`, templateVars);
       })

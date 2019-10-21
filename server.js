@@ -65,7 +65,8 @@ app.use("/records", recordsRoutes(db));
 app.get("/", (req, res) => {
   let templateVars = {
     username: req.session.user_id,
-    gamename: ""
+    gamename: "",
+    gameId: ""
   };
   res.render("index", templateVars);
 });

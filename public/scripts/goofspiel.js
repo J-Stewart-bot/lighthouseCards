@@ -7,6 +7,10 @@ $(() => {
   const username = $("#username").text();
   socket.emit('username', username);
 
+  socket.on('opponent', function(username) {
+    $('#opponentName').text(username);
+  })
+
   socket.on('turn', function(username) {
     $('#confirm').css('visibility', 'visible');
     document.title = "!!";
@@ -32,11 +36,17 @@ $(() => {
     $('#opponentScore').text(p2);
 
     if (p1 === 'winner') {
-      console.log('in winner');
+      const loser = $('#opponentName').text();
+      let game = $('#gamename').text();
+
+      if (game = 'Goofspiel') {
+        game = 1;
+      }
+
       $.ajax({
         type: "POST",
         url: "/records",
-        data: { winner: 'winnner', loser: 'loser', gameId: '1' },
+        data: { winner: username, loser: loser, gameId: game },
         success: () => {
           console.log('did a thing')
         }
