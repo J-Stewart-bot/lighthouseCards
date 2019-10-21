@@ -18,7 +18,6 @@ const onConnect = function(socket) {
       game.setGameId(socket.id);
       game.setPlayerOne(socket);
       socket.gameId = game.gameId;
-      socket.playerOne = true;
     } else {
       console.log('p2');
       game.setPlayerTwo(socket);
