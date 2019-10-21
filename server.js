@@ -64,7 +64,8 @@ app.use("/records", recordsRoutes(db));
 // Separate them into separate routes files (see above).
 app.get("/", (req, res) => {
   let templateVars = {
-    username: req.session.user_id
+    username: req.session.user_id,
+    gamename: ""
   };
   res.render("index", templateVars);
 });
