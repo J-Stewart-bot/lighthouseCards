@@ -56,11 +56,22 @@ body {
       width: 25%;
       align-self: center;
       display: flex;
-      justify-content: space-around;
+      justify-content: space-evenly;
+
+      .alert {
+        margin-bottom: 0;
+      }
+
+      #error {
+        visibility: hidden;
+      }
 
       #confirm {
         visibility: hidden;
-        // margin-right: 75px;
+      }
+
+      #score {
+        align-self: center;
       }
     }
 
