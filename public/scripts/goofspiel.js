@@ -5,7 +5,8 @@ $(() => {
 
   // ask username
   const username = $("#username").text();
-  socket.emit('username', username);
+  const gamename = $("#gamename").text();
+  socket.emit('username', username, gamename);
 
   socket.on('opponent', function(username) {
     $('#opponentName').text(username);
