@@ -12,7 +12,7 @@ const http       = require('http').Server(app);
 const io         = require('socket.io')(http);
 const morgan     = require('morgan');
 
-const listenForConnection = require('./games/games');
+const listenForConnection = require('./games');
 
 const cookieSession = require('cookie-session');
 app.use(cookieSession({
