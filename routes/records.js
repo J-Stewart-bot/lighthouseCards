@@ -50,3 +50,20 @@ module.exports = (db) => {
 
   return router;
 };
+
+router.post("/", (req, res) => {
+  console.log(req);
+  db.query(`
+    INSERT INTO records (winner, loser, game_id)
+    VALUES ($1, $2, $3)
+    RETURNING *;
+    `, [req.body.winner, req.body.loser, req.body.game_id])
+    .then(res => {
+      console.log(res);
+    })
+    .catch(err => {
+      res
+        .status(500)
+        .json({ error: err.message });
+    });
+});

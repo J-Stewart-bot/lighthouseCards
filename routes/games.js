@@ -29,7 +29,8 @@ module.exports = (db) => {
       .then(data => {
         const game = data.rows[0];
         let templateVars = {
-          username: req.session.user_id
+          username: req.session.user_id,
+          gamename: game.name
         };
         res.render(`${req.params.id}`, templateVars);
       })
