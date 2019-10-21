@@ -1,38 +1,43 @@
 const Goofspiel = require('./goofspiel/goofspiel');
 
 const games = {};
-let game;
 let io;
 
 const onConnect = function(socket) {
-  if(game === undefined) {
-    game = new Goofspiel();
-  }
-
-  socket.on('username', function(username) {
+  socket.on('username', function(username, gamename) {
     socket.username = username;
     socket.card = undefined;
     socket.score = 0;
-    if (game.getPlayerOne === undefined) {
+
+    for (const game in games) {
+      console.log('is game');
+      console.log(gamename, game.gameName);
+      console.log(game.getPlayerTwo);
+      if (games[game].getPlayerTwo === undefined && gamename === games[game].gamename) {
+        console.log('p2');
+        games[game].setPlayerTwo(socket);
+        socket.gameId = games[game].gameId;
+        socket.turn = games[game].gameId;
+        games[game].getPlayerOne.turn = socket.id;
+
+        games[game].start(io);
+
+        // game = undefined;
+      }
+    }
+    if (!socket.gameId) {
+      let game;
+
+      if (gamename === 'Goofspiel') {
+        game = new Goofspiel();
+      }
+
       console.log('p1');
       game.setGameId(socket.id);
       game.setPlayerOne(socket);
       socket.gameId = game.gameId;
-    } else {
-      console.log('p2');
-      game.setPlayerTwo(socket);
-      socket.gameId = game.gameId;
-      socket.turn = game.gameId;
-      game.getPlayerOne.turn = socket.id;
-      io.to(`${game.getPlayerOne.id}`).emit('prize', game.newPrize());
-      io.to(`${game.getPlayerTwo.id}`).emit('prize', game.getCurrentPrize);
-      io.to(`${game.getPlayerOne.id}`).emit('opponent', game.getPlayerTwo.username);
-      io.to(`${game.getPlayerTwo.id}`).emit('opponent', game.getPlayerOne.username);
-
-      io.to(`${game.getPlayerOne.id}`).emit('turn', username);
 
       games[game.gameId] = Object.assign( Object.create( Object.getPrototypeOf(game)), game);
-      game = undefined;
     }
   });
 

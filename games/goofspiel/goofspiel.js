@@ -1,11 +1,16 @@
 class Goofspiel {
   constructor() {
     this.id;
+    this.gamename = 'Goofspiel';
     this.inProgress = true;
     this.playerOne;
     this.playerTwo;
     this.prizes = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
     this.currentPrize = -1;
+  }
+
+  get gameName() {
+    return this.gamename;
   }
 
   get gameId() {
@@ -55,6 +60,14 @@ class Goofspiel {
     this.inProgress = false;
   }
 
+  start(io) {
+    io.to(this.getPlayerOne.id).emit('prize', this.newPrize());
+    io.to(this.getPlayerTwo.id).emit('prize', this.getCurrentPrize);
+    io.to(this.getPlayerOne.id).emit('opponent', this.getPlayerTwo.username);
+    io.to(this.getPlayerTwo.id).emit('opponent', this.getPlayerOne.username);
+
+    io.to(this.getPlayerOne.id).emit('turn', this.getPlayerTwo.username);
+  }
 
   takeTurn(io, socket, username, card) {
     if (this.getPlayerOne.card === undefined) {
