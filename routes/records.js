@@ -15,7 +15,6 @@ module.exports = (db) => {
       FROM records
       GROUP BY winner, game_id
       ORDER BY
-        game_id,
         wins DESC;
       `)
       .then(data => {

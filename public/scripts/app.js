@@ -4,7 +4,7 @@ $(() => {
     url: "/games"
   }).done((games) => {
     for(game of games.games) {
-      $("<div>").addClass(`${game.name.toLowerCase()}`).text(game.name).appendTo($("body"));
+      $("<button>").addClass(`${game.name.toLowerCase()} btn btn-outline-info game`).text(game.name).appendTo($("body"));
     }
     $(`.war`).click(function() {
       window.open('/games/War');

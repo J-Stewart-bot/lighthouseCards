@@ -21,14 +21,14 @@
       <tr>
         <th>Name</th>
         <th>Wins</th>
-        <th>Game</th>
+        <th>Win Ratio</th>
       </tr>
       <% for(let record of records) { %>
         <% if (record.game_id === 1) { %>
           <tr>
             <td><%= record.name %></td>
             <td><%= record.wins %></td>
-            <td><%= record.game_id %></td>
+            <td><%= record.wins / record.loses %></td>
           </tr>
         <% } %>
       <% } %>
@@ -41,14 +41,14 @@
       <tr>
         <th>Name</th>
         <th>Wins</th>
-        <th>Game</th>
+        <th>Win Ratio</th>
       </tr>
       <% for(let record of records) { %>
         <% if (record.game_id === 2) { %>
           <tr>
             <td><%= record.name %></td>
             <td><%= record.wins %></td>
-            <td><%= record.game_id %></td>
+            <td><%= record.wins / record.loses %></td>
           </tr>
         <% } %>
       <% } %>
