@@ -70,6 +70,8 @@ class Goofspiel {
         io.to(`${this.getPlayerOne.id}`).emit('score', this.getPlayerOne.score, this.getPlayerTwo.score);
         io.to(`${this.getPlayerTwo.id}`).emit('score', this.getPlayerTwo.score, this.getPlayerOne.score);
       }
+      io.to(`${this.getPlayerOne.id}`).emit('show', this.getPlayerOne.card, card);
+      io.to(`${this.getPlayerTwo.id}`).emit('show', card, this.getPlayerOne.card);
       this.getPlayerOne.card = undefined;
       if (!this.isGameOver()) {
         io.to(`${this.getPlayerOne.id}`).emit('prize', this.newPrize());
