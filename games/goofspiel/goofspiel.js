@@ -89,7 +89,7 @@ class Goofspiel {
           io.to(`${this.getPlayerOne.id}`).emit('score', 'loser', 'winner');
           io.to(`${this.getPlayerTwo.id}`).emit('score', 'winner', 'loser');
         }
-
+        this.gameOver();
       }
     }
   socket.broadcast.to(socket.turn).emit('turn', username);
@@ -106,6 +106,8 @@ class Goofspiel {
       }
 
       this.gameOver();
+    } else {
+      io.to(socket.id).emit('exit');
     }
 
   }

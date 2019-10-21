@@ -11,9 +11,9 @@ const router  = express.Router();
 module.exports = (db) => {
   router.get("/", (req, res) => {
     db.query(`
-      SELECT winner AS name, COUNT(winner) AS wins
+      SELECT winner AS name, COUNT(winner) AS wins, game_id
       FROM records
-      GROUP BY winner
+      GROUP BY winner, game_id
       ORDER BY wins DESC;
       `)
       .then(data => {
