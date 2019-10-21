@@ -1,4 +1,17 @@
 INSERT INTO records (winner, loser, game_id)
 VALUES ('Kevin', 'Steve', 1),
 ('Steve', 'Kevin', 2),
+('Sarah', 'Kevin', 1),
+('Kevin', 'Kevin', 1),
+('Steve', 'Kevin', 1),
+('Steve', 'Ally', 1),
+('Ally', 'Kevin', 1),
+('Steve', 'Kevin', 1),
+('Ally', 'Kevin', 2),
+('Steve', 'Kevin', 1),
+('Kevin', 'Kevin', 1),
+('Steve', 'Kevin', 2),
+('Kevin', 'Kevin', 2),
+('Steve', 'Kevin', 2),
+('Sarah', 'Kevin', 1),
 ('Kevin', 'Sarah', 1);

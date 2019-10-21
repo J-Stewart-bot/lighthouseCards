@@ -16,13 +16,43 @@
 
     <h1>Records</h1>
 
-    <% for(let record of records) { %>
+    <h2>Goofspiel</h2>
+    <table>
+      <tr>
+        <th>Name</th>
+        <th>Wins</th>
+        <th>Game</th>
+      </tr>
+      <% for(let record of records) { %>
+        <% if (record.game_id === 1) { %>
+          <tr>
+            <td><%= record.name %></td>
+            <td><%= record.wins %></td>
+            <td><%= record.game_id %></td>
+          </tr>
+        <% } %>
+      <% } %>
+    </table>
 
-        <span><%= record.name %></span>
-        <span><%= record.wins %></span>
-        <span><%= record.game_id %></span>
+    <br>
 
-    <% } %>
+    <h2>War</h2>
+    <table>
+      <tr>
+        <th>Name</th>
+        <th>Wins</th>
+        <th>Game</th>
+      </tr>
+      <% for(let record of records) { %>
+        <% if (record.game_id === 2) { %>
+          <tr>
+            <td><%= record.name %></td>
+            <td><%= record.wins %></td>
+            <td><%= record.game_id %></td>
+          </tr>
+        <% } %>
+      <% } %>
+    </table>
 
   </body>
   <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>

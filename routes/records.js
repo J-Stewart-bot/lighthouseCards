@@ -14,7 +14,9 @@ module.exports = (db) => {
       SELECT winner AS name, COUNT(winner) AS wins, game_id
       FROM records
       GROUP BY winner, game_id
-      ORDER BY wins DESC;
+      ORDER BY
+        game_id,
+        wins DESC;
       `)
       .then(data => {
         const records = data.rows;
