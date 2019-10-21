@@ -2,6 +2,7 @@
 html {
   height: 100%;
 }
+
 body {
   background-color: #EEE;
   display: flex;
@@ -10,6 +11,10 @@ body {
 
   h1 {
     color: #244751;
+  }
+
+  #opponentName {
+    color: red;
   }
 
   .container {
@@ -31,27 +36,36 @@ body {
     }
   }
 
+  .opponent {
+    display: flex;
+    flex-direction: column;
+
+    footer {
+      width: 50%;
+      align-self: center;
+      display: flex;
+      justify-content: center;
+    }
+  }
+
   .player {
     display: flex;
     flex-direction: column;
 
     header {
-      width: 50%;
+      width: 25%;
       align-self: center;
       display: flex;
-      justify-content: center;
+      justify-content: space-around;
 
       #confirm {
         visibility: hidden;
-        margin-right: 75px;
+        // margin-right: 75px;
       }
-
     }
-
 
     img:hover, .selected {
       transform: scale(1.5, 1.5);
-
     }
   }
 
@@ -64,15 +78,21 @@ body {
 
     .deck {
       margin: 2px;
+      align-self: center;
     }
 
     .prize {
       margin: 2px;
+      align-self: center;
+    }
+
+    .bets {
+      display: flex;
+      flex-direction: column;
     }
 
     .prize:hover {
       transform: scale(1.5, 1.5);
     }
   }
-
 }
