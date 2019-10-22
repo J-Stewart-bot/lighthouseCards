@@ -13,11 +13,47 @@
 
   <body>
     <% include ./partials/_header %>
+    <h1>Opponent: <span id="opponentName"></span></h1>
+    <div class="opponent">
+      <div class="container">
+        <div class="card">
+          <img src="/cards/blue_back.png"/>
+        </div>
+      </div>
+      <footer>
+        <span id="opponentScore">0</span>
+      </footer>
+    </div>
 
-    <h1>Hello War!</h1>
+    <div class="container prizes">
+      <div class="bets">
+        <div class="opponentCard">
+          <img src="/cards/blue_back.png"/>
+        </div>
+        <div class="yourCard">
+          <img src="/cards/blue_back.png"/>
+        </div>
+      </div>
+    </div>
+
+    <div class="player">
+      <header>
+        <span id="error" class="alert alert-danger" role="alert">Select card</span>
+        </span>
+        <button id="confirm" class="btn btn-outline-info">Confirm</button>
+        <span id="score">0</span>
+      </header>
+      <div class="container">
+        <div class="card" id="1">
+          <img src="/cards/blue_back.png"/>
+        </div>
+      </div>
+    </div>
 
   </body>
   <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.dev.js"></script>
+  <script type="text/javascript" src="/scripts/gameScript.js"></script>
   <!-- <script type="text/javascript" src="/scripts/app.js"></script> -->
   <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script> -->
 </html>

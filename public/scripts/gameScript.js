@@ -74,6 +74,8 @@ $(() => {
 
       if (game = 'Goofspiel') {
         game = 1;
+      } else if (game = 'War') {
+        game = 2;
       }
 
       $.ajax({

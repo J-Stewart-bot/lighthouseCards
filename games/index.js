@@ -1,4 +1,5 @@
 const Goofspiel = require('./goofspiel/goofspiel');
+const War = require('./war/war');
 
 const games = {};
 let io;
@@ -30,6 +31,8 @@ const onConnect = function(socket) {
 
       if (gamename === 'Goofspiel') {
         game = new Goofspiel();
+      } else if (gamename === 'War') {
+        game = new War();
       }
 
       console.log('p1');
