@@ -2,6 +2,7 @@ $(() => {
 
 
   const socket = io.connect('localhost:8080');
+  // const socket = io.connect('192.168.1.3:8080');
 
   // ask username
   const username = $("#username").text();
