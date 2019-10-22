@@ -11,10 +11,9 @@ const router  = express.Router();
 module.exports = (db) => {
   router.get("/", (req, res) => {
     db.query(`
-      SELECT winners.name as name, COUNT(winners.name) AS wins, COUNT(losers.name) as loses, game_id
+      SELECT winners.name as name, COUNT(winners.name) AS wins, game_id
       FROM records
       JOIN winners ON records.id = winners.record_id
-      JOIN losers ON records.id = losers.record_id
       GROUP BY winners.name, game_id
       ORDER BY
         wins DESC;
@@ -66,7 +65,6 @@ module.exports = (db) => {
   });
 
   router.post("/", (req, res) => {
-    console.log('I AM HERE', req.body)
     db.query(`
       INSERT INTO records (game_id)
       VALUES ($1)
@@ -77,11 +75,9 @@ module.exports = (db) => {
       })
       .then(res => {
         if(req.body.winners != undefined) {
-          console.log('in winners');
           let query = `
             INSERT INTO winners (name, record_id)
             VALUES`
-
           let values = [];
           for (const win in req.body.winners) {
             values.push(`($${Number(win) + 1}, $${req.body.winners.length + 1})`);
@@ -102,32 +98,25 @@ module.exports = (db) => {
             console.log(err);
           })
         }
-        console.log(res);
         return res;
       })
       .then(res => {
-        console.log('in here my guy')
         if(req.body.losers.length > 0) {
           let query = `
             INSERT INTO losers (name, record_id)
             VALUES`
-
           let values = [];
           for (const win in req.body.losers) {
             values.push(`($${Number(win) + 1}, $${req.body.losers.length + 1})`);
           }
 
-          console.log('after loop', values)
           values = values.join(', ')
 
           query = query.concat(' ', values)
           query += ';'
 
-          console.log(query)
           const someValue = req.body.losers
           someValue.push(res)
-          console.log(query)
-          console.log(someValue)
 
           db.query(query, someValue)
           .then(res => {
@@ -143,7 +132,6 @@ module.exports = (db) => {
           .json({ error: err.message });
       });
   });
-
   return router;
 };
 
