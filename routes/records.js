@@ -11,15 +11,16 @@ const router  = express.Router();
 module.exports = (db) => {
   router.get("/", (req, res) => {
     db.query(`
-      SELECT winner AS name, COUNT(winner) AS wins, game_id
+      SELECT winners.name as name, COUNT(winners.name) AS wins, COUNT(losers.name) as loses, game_id
       FROM records
-      GROUP BY winner, game_id
+      JOIN winners ON records.id = winners.record_id
+      JOIN losers ON records.id = losers.record_id
+      GROUP BY winners.name, game_id
       ORDER BY
         wins DESC;
       `)
       .then(data => {
         const records = data.rows;
-        console.log(data);
         let templateVars = {
           username: req.session.user_id,
           gamename: '',
