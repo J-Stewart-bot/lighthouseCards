@@ -67,8 +67,6 @@ class Goofspiel {
     this.playerOne.cards = this.deck.spades;
     this.playerTwo.cards = this.deck.hearts;
 
-    console.log(this.playerOne.cards);
-
     io.to(this.getPlayerOne.id).emit('prize', this.newPrize());
     io.to(this.getPlayerTwo.id).emit('prize', this.getCurrentPrize);
     io.to(this.getPlayerOne.id).emit('opponent', this.getPlayerTwo.username, this.getPlayerOne.cards);

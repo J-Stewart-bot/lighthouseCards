@@ -13,11 +13,8 @@ class Suit {
   }
 
   getImg(value) {
-    console.log(this.suit, value)
     return this.suit[value - 1].img;
   }
-
-
 }
 
 module.exports = Suit;

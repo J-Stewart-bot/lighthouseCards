@@ -12,10 +12,11 @@ $(() => {
   socket.on('opponent', function(username, deck) {
     $('#opponentName').text(username);
 
-    console.log(deck);
-    for (const card in deck.suit) {
-      console.log(card);
-      $(`#${Number(card) + 1} > img`).attr('src', `/cards/${deck.suit[card].img}`)
+    if (deck != undefined) {
+      for (const card in deck.suit) {
+        console.log(card);
+        $(`#${Number(card) + 1} > img`).attr('src', `/cards/${deck.suit[card].img}`)
+      }
     }
   })
 
@@ -121,7 +122,7 @@ $(() => {
     if (card) {
       $('#confirm').css('visibility', 'hidden');
       $('#error').css('visibility', 'hidden');
-      document.title = "Goofspiel";
+      document.title = "Game";
       socket.emit('turn', username, Number(card));
     } else {
       $('#error').css('visibility', 'visible');
