@@ -19,16 +19,16 @@
     <h2>Goofspiel</h2>
     <table>
       <tr>
-        <th>Name</th>
-        <th>Wins</th>
-        <th>Archive</th>
+        <th>Winner</th>
+        <th>Loser</th>
+        <th>Date</th>
       </tr>
       <% for(let record of records) { %>
-        <% if (record.game_id === 1) { %>
+        <% if (record.game === 'Goofspiel') { %>
           <tr>
-            <td><%= record.name %></td>
-            <td><%= record.wins %></td>
-            <td><a href="/records/<%= record.name %>">Archive</a></td>
+            <td><%= record.winner %></td>
+            <td><%= record.loser %></td>
+            <td><%= record.date %></td>
           </tr>
         <% } %>
       <% } %>
@@ -39,16 +39,16 @@
     <h2>War</h2>
     <table>
       <tr>
-        <th>Name</th>
-        <th>Wins</th>
-        <th>Archive</th>
+        <th>Winner</th>
+        <th>Loser</th>
+        <th>Date</th>
       </tr>
       <% for(let record of records) { %>
-        <% if (record.game_id === 2) { %>
+        <% if (record.game === 'War') { %>
           <tr>
-            <td><%= record.name %></td>
-            <td><%= record.wins %></td>
-            <td><a href="/records/<%= record.name %>">Archive</a></td>
+            <td><%= record.winner %></td>
+            <td><%= record.loser %></td>
+            <td><%= record.date %></td>
           </tr>
         <% } %>
       <% } %>

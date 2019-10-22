@@ -37,11 +37,26 @@ module.exports = (db) => {
 
   router.get("/:id", (req, res) => {
     db.query(
-      `SELECT * FROM records
-      WHERE winner = $1`, [req.params.id])
+      `SELECT
+        winners.name as winner,
+        losers.name as loser,
+        games.name as game,
+        records.date as date
+      FROM games
+      JOIN records ON games.id = game_id
+      JOIN winners ON records.id = winners.record_id
+      JOIN losers ON records.id = losers.record_id
+      WHERE
+        winners.name LIKE $1 OR
+        losers.name LIKE $1`, [req.params.id])
       .then(data => {
-        const record = data.rows;
-        res.json({ record });
+        const records = data.rows;
+        let templateVars = {
+          username: req.session.user_id,
+          gamename: '',
+          records
+        };
+        res.render('../views/records_player', templateVars);
       })
       .catch(err => {
         res
