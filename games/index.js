@@ -1,4 +1,5 @@
 const Goofspiel = require('./goofspiel/goofspiel');
+const War = require('./war/war');
 
 const games = {};
 let io;
@@ -7,6 +8,7 @@ const onConnect = function(socket) {
   socket.on('username', function(username, gamename) {
     socket.username = username;
     socket.card = undefined;
+    socket.bet = [];
     socket.score = 0;
 
     for (const game in games) {
@@ -30,6 +32,8 @@ const onConnect = function(socket) {
 
       if (gamename === 'Goofspiel') {
         game = new Goofspiel();
+      } else if (gamename === 'War') {
+        game = new War();
       }
 
       console.log('p1');

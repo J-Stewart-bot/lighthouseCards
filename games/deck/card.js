@@ -3,10 +3,7 @@ class Card {
     this.suit = suit;
     this.face = face;
     this.value = value;
-  }
-
-  get img() {
-    return `${this.face}${this.suit}.png`;
+    this.img = `${this.face}${this.suit}.png`;
   }
 }
 

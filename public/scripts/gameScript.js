@@ -9,8 +9,14 @@ $(() => {
   const gamename = $("#gamename").text();
   socket.emit('username', username, gamename);
 
-  socket.on('opponent', function(username) {
+  socket.on('opponent', function(username, deck) {
     $('#opponentName').text(username);
+
+    console.log(deck);
+    for (const card in deck.suit) {
+      console.log(card);
+      $(`#${Number(card) + 1} > img`).attr('src', `/cards/${deck.suit[card].img}`)
+    }
   })
 
   socket.on('turn', function(username) {
@@ -33,35 +39,18 @@ $(() => {
   });
 
   socket.on('show', function(yourCard, opponentCard) {
-    if (yourCard === 13) {
-      $('.yourCard > img').attr('src', '/cards/KD.png');
-    } else if (yourCard === 12) {
-      $('.yourCard > img').attr('src', '/cards/QD.png');
-    } else if (yourCard === 11) {
-      $('.yourCard > img').attr('src', '/cards/JD.png');
-    } else if (yourCard > 1) {
-      $('.yourCard > img').attr('src', `/cards/${yourCard}D.png`);
-    } else {
-      $('.yourCard > img').attr('src', '/cards/AD.png');
-    }
-
-    if (opponentCard === 13) {
-      $('.opponentCard > img').attr('src', '/cards/KD.png');
-    } else if (opponentCard === 12) {
-      $('.opponentCard > img').attr('src', '/cards/QD.png');
-    } else if (opponentCard === 11) {
-      $('.opponentCard > img').attr('src', '/cards/JD.png');
-    } else if (opponentCard > 1) {
-      $('.opponentCard > img').attr('src', `/cards/${opponentCard}D.png`);
-    } else {
-      $('.opponentCard > img').attr('src', '/cards/AD.png');
-    }
+    $('.yourCard > img').attr('src', `/cards/${yourCard}`)
+    $('.opponentCard > img').attr('src', `/cards/${opponentCard}`);
   });
 
   socket.on('score', function(p1, p2) {
     $('#score').text(p1);
     $('#opponentScore').text(p2);
-    $('.opponent > .container').find('div:first').remove();
+
+    let game = $('#gamename').text();
+    if (game === 'Goofspiel') {
+      $('.opponent > .container').find('div:first').remove();
+    }
   });
 
   socket.on('win', function(p1, p2) {
@@ -72,8 +61,10 @@ $(() => {
       const loser = $('#opponentName').text();
       let game = $('#gamename').text();
 
-      if (game = 'Goofspiel') {
+      if (game === 'Goofspiel') {
         game = 1;
+      } else if (game === 'War') {
+        game = 2;
       }
 
       $.ajax({
@@ -117,9 +108,16 @@ $(() => {
       });
   })
 
-
   $('#confirm').click(() => {
-    const card = $('.player > .container').find('.selected').remove().attr('id');
+    let game = $('#gamename').text();
+    let card;
+
+    if (game === 'Goofspiel') {
+      card = $('.player > .container').find('.selected').remove().attr('id');
+    } else if (game === 'War') {
+      card = $('.player > .container').find('.selected').attr('id');
+    }
+
     if (card) {
       $('#confirm').css('visibility', 'hidden');
       $('#error').css('visibility', 'hidden');
@@ -131,7 +129,6 @@ $(() => {
   })
 
   socket.on('exit', function() {
-    console.log('run');
     window.location.href = "/";
   });
 
@@ -158,7 +155,5 @@ $(() => {
         socket.emit('left', username);
       }
     });
-
-
   })
 });

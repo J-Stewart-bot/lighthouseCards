@@ -14,6 +14,14 @@ class Deck {
     this.deck = this.deck.concat(this.spades.suit);
   }
 
+  get getDeck() {
+    return this.deck;
+  }
+
+  setDeck(deck) {
+    this.deck = deck;
+  }
+
   shuffleDeck() {
     let newDeck = [];
 
