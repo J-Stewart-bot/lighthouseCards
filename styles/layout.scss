@@ -11,19 +11,19 @@ html {
   @keyframes colorchange
     {
       0%   {background: red;}
-      25%  {background: rgb(121, 121, 9);}
-      50%  {background: blue;}
+      25%  {background: orange;}
+      50%  {background: yellow;}
       75%  {background: green;}
-      100% {background: red;}
+      100% {background: blue;}
     }
 
     @-webkit-keyframes colorchange /* Safari and Chrome - necessary duplicate */
     {
       0%   {background: red;}
-      25%  {background: yellow;}
-      50%  {background: blue;}
+      25%  {background: orange;}
+      50%  {background: yellow;}
       75%  {background: green;}
-      100% {background: red;}
+      100% {background: blue;}
     }
 }
 
