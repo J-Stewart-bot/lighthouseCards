@@ -1,8 +1,11 @@
+const Deck = require('../deck/deck');
+
 class Goofspiel {
   constructor() {
     this.id;
     this.gamename = 'Goofspiel';
     this.inProgress = true;
+    this.deck = new Deck();
     this.playerOne;
     this.playerTwo;
     this.prizes = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
@@ -61,10 +64,15 @@ class Goofspiel {
   }
 
   start(io) {
+    this.playerOne.cards = this.deck.spades;
+    this.playerTwo.cards = this.deck.hearts;
+
+    console.log(this.playerOne.cards);
+
     io.to(this.getPlayerOne.id).emit('prize', this.newPrize());
     io.to(this.getPlayerTwo.id).emit('prize', this.getCurrentPrize);
-    io.to(this.getPlayerOne.id).emit('opponent', this.getPlayerTwo.username);
-    io.to(this.getPlayerTwo.id).emit('opponent', this.getPlayerOne.username);
+    io.to(this.getPlayerOne.id).emit('opponent', this.getPlayerTwo.username, this.getPlayerOne.cards);
+    io.to(this.getPlayerTwo.id).emit('opponent', this.getPlayerOne.username, this.playerTwo.cards);
 
     io.to(this.getPlayerOne.id).emit('turn', this.getPlayerTwo.username);
   }
@@ -84,8 +92,8 @@ class Goofspiel {
       }
       io.to(`${this.getPlayerOne.id}`).emit('score', this.getPlayerOne.score, this.getPlayerTwo.score);
       io.to(`${this.getPlayerTwo.id}`).emit('score', this.getPlayerTwo.score, this.getPlayerOne.score);
-      io.to(`${this.getPlayerOne.id}`).emit('show', this.getPlayerOne.card, card);
-      io.to(`${this.getPlayerTwo.id}`).emit('show', card, this.getPlayerOne.card);
+      io.to(`${this.getPlayerOne.id}`).emit('show', this.getPlayerOne.cards.getImg(this.getPlayerOne.card), this.getPlayerTwo.cards.getImg(card));
+      io.to(`${this.getPlayerTwo.id}`).emit('show', this.getPlayerTwo.cards.getImg(card), this.getPlayerOne.cards.getImg(this.getPlayerOne.card));
       this.getPlayerOne.card = undefined;
       if (!this.isGameOver()) {
         io.to(`${this.getPlayerOne.id}`).emit('prize', this.newPrize());
@@ -105,7 +113,7 @@ class Goofspiel {
         this.gameOver();
       }
     }
-  socket.broadcast.to(socket.turn).emit('turn', username);
+    socket.broadcast.to(socket.turn).emit('turn', username);
   }
 
   left(io, socket) {

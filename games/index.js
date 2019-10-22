@@ -8,6 +8,7 @@ const onConnect = function(socket) {
   socket.on('username', function(username, gamename) {
     socket.username = username;
     socket.card = undefined;
+    socket.bet = [];
     socket.score = 0;
 
     for (const game in games) {
