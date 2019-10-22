@@ -51,6 +51,7 @@ module.exports = (db) => {
   });
 
   router.post("/", (req, res) => {
+    console.log('I AM HERE', req.body)
     db.query(`
       INSERT INTO records (game_id)
       VALUES ($1)
@@ -60,21 +61,65 @@ module.exports = (db) => {
         return res.rows[0].id
       })
       .then(res => {
-        for (const winner of req.body.winners) {
-          db.query(`
+        if(req.body.winners != undefined) {
+          console.log('in winners');
+          let query = `
             INSERT INTO winners (name, record_id)
-            VALUES ($1, $2)
-          `, [winner, res])
-        }
+            VALUES`
 
+          let values = [];
+          for (const win in req.body.winners) {
+            values.push(`($${Number(win) + 1}, $${req.body.winners.length + 1})`);
+          }
+
+          values = values.join(', ')
+
+          query = query.concat(' ', values)
+          query += ';'
+
+          const someValue = req.body.winners
+          someValue.push(res)
+
+          db.query(query, someValue)
+          .then(res => {
+          })
+          .catch(err => {
+            console.log(err);
+          })
+        }
+        console.log(res);
         return res;
       })
       .then(res => {
-        for (const loser of req.body.losers) {
-          db.query(`
+        console.log('in here my guy')
+        if(req.body.losers.length > 0) {
+          let query = `
             INSERT INTO losers (name, record_id)
-            VALUES ($1, $2)
-          `, [loser, res])
+            VALUES`
+
+          let values = [];
+          for (const win in req.body.losers) {
+            values.push(`($${Number(win) + 1}, $${req.body.losers.length + 1})`);
+          }
+
+          console.log('after loop', values)
+          values = values.join(', ')
+
+          query = query.concat(' ', values)
+          query += ';'
+
+          console.log(query)
+          const someValue = req.body.losers
+          someValue.push(res)
+          console.log(query)
+          console.log(someValue)
+
+          db.query(query, someValue)
+          .then(res => {
+          })
+          .catch(err => {
+            console.log(err);
+          })
         }
       })
       .catch(err => {
