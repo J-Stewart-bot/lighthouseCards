@@ -62,6 +62,11 @@ $(() => {
     $('#score').text(p1);
     $('#opponentScore').text(p2);
     $('.opponent > .container').find('div:first').remove();
+  });
+
+  socket.on('win', function(p1, p2) {
+    $('#score').prepend(`${p1} `);
+    $('#opponentScore').prepend(`${p2} `);
 
     if (p1 === 'winner') {
       const loser = $('#opponentName').text();
@@ -74,7 +79,7 @@ $(() => {
       $.ajax({
         type: "POST",
         url: "/records",
-        data: { winner: username, loser: loser, gameId: game },
+        data: { winners: [username], losers: [loser], gameId: game },
         success: () => {
           console.log('did a thing')
         }
@@ -88,10 +93,30 @@ $(() => {
     }
   });
 
-  socket.on('win', function(p1, p2) {
-    $('#score').prepend(`${p1} `);
-    $('#opponentScore').prepend(`${p2} `);
-  });
+  socket.on('tie', function() {
+    const loser = $('#opponentName').text();
+    let game = $('#gamename').text();
+
+    if (game = 'Goofspiel') {
+      game = 1;
+    }
+
+    $.ajax({
+      type: "POST",
+      url: "/records",
+      data: { winners: [], losers: [username, loser], gameId: game },
+      success: () => {
+        console.log('did a thing')
+      }
+    })
+      .then(() => {
+
+      })
+      .fail((error) => {
+        renderError(error.responseJSON.error);
+      });
+  })
+
 
   $('#confirm').click(() => {
     const card = $('.player > .container').find('.selected').remove().attr('id');

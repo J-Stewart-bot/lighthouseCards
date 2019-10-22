@@ -94,9 +94,13 @@ class Goofspiel {
         if (this.getPlayerOne.score > this.getPlayerTwo.score) {
           io.to(`${this.getPlayerOne.id}`).emit('win', 'winner', 'loser');
           io.to(`${this.getPlayerTwo.id}`).emit('win', 'loser', 'winner');
-        } else {
+        } else if (this.getPlayerOne.score < this.getPlayerTwo.score) {
           io.to(`${this.getPlayerOne.id}`).emit('win', 'loser', 'winner');
           io.to(`${this.getPlayerTwo.id}`).emit('win', 'winner', 'loser');
+        } else {
+          io.to(`${this.getPlayerOne.id}`).emit('win', 'tie', 'tie');
+          io.to(`${this.getPlayerTwo.id}`).emit('win', 'tie', 'tie');
+          io.to(`${this.getPlayerOne.id}`).emit('tie');
         }
         this.gameOver();
       }
@@ -107,10 +111,10 @@ class Goofspiel {
   left(io, socket) {
     if (this.inProgress) {
       if (this.playerOne.id === socket.id) {
-        io.to(`${this.getPlayerTwo.id}`).emit('score', 'winner', 'loser');
+        io.to(`${this.getPlayerTwo.id}`).emit('win', 'winner', 'loser');
         io.to(`${this.getPlayerOne.id}`).emit('exit');
       } else {
-        io.to(`${this.getPlayerOne.id}`).emit('score', 'winner', 'loser');
+        io.to(`${this.getPlayerOne.id}`).emit('win', 'winner', 'loser');
         io.to(`${this.getPlayerTwo.id}`).emit('exit');
       }
 

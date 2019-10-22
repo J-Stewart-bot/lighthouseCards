@@ -42,7 +42,6 @@ module.exports = (db) => {
       .then(data => {
         const record = data.rows;
         res.json({ record });
-        // res.render("../views/index");
       })
       .catch(err => {
         res
@@ -53,11 +52,30 @@ module.exports = (db) => {
 
   router.post("/", (req, res) => {
     db.query(`
-      INSERT INTO records (winner, loser, game_id)
-      VALUES ($1, $2, $3)
+      INSERT INTO records (game_id)
+      VALUES ($1)
       RETURNING *;
-      `, [req.body.winner, req.body.loser, req.body.gameId])
+      `, [req.body.gameId])
       .then(res => {
+        return res.rows[0].id
+      })
+      .then(res => {
+        for (const winner of req.body.winners) {
+          db.query(`
+            INSERT INTO winners (name, record_id)
+            VALUES ($1, $2)
+          `, [winner, res])
+        }
+
+        return res;
+      })
+      .then(res => {
+        for (const loser of req.body.losers) {
+          db.query(`
+            INSERT INTO losers (name, record_id)
+            VALUES ($1, $2)
+          `, [loser, res])
+        }
       })
       .catch(err => {
         res
