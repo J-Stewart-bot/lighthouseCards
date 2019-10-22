@@ -87,10 +87,9 @@ $(() => {
     }
   });
 
-  socket.on('win', function(points) {
-    let currentScore = $('#score').text();
-    console.log(currentScore);
-    $('#score').text(Number(currentScore) + points);
+  socket.on('win', function(p1, p2) {
+    $('#score').prepend(`${p1} `);
+    $('#opponentScore').prepend(`${p2} `);
   });
 
   $('#confirm').click(() => {
@@ -122,12 +121,18 @@ $(() => {
   })
 
   $('#exit').click(() => {
-    const response = confirm("Are you sure you want to leave?");
+    socket.emit('inProgress', undefined, (res) => {
+      if (res) {
+        const response = confirm("Are you sure you want to leave?");
 
-    if (response) {
-      socket.emit('left', username);
-      console.log('bye');
-      //close window or something
-    }
+        if (response) {
+          socket.emit('left', username);
+        }
+      } else {
+        socket.emit('left', username);
+      }
+    });
+
+
   })
 });

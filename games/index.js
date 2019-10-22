@@ -45,6 +45,10 @@ const onConnect = function(socket) {
     games[socket.gameId].takeTurn(io, socket, username, card);
   })
 
+  socket.on('inProgress', function(data, callback) {
+    callback(games[socket.gameId].inProgress);
+  })
+
   socket.on('left', function(username) {
     console.log(username, 'has left');
     games[socket.gameId].left(io, socket);

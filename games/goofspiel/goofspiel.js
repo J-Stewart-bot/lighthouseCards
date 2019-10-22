@@ -96,11 +96,15 @@ class Goofspiel {
         io.to(`${this.getPlayerTwo.id}`).emit('prize', this.getCurrentPrize);
       } else {
         if (this.getPlayerOne.score > this.getPlayerTwo.score) {
-          io.to(`${this.getPlayerOne.id}`).emit('score', 'winner', 'loser');
-          io.to(`${this.getPlayerTwo.id}`).emit('score', 'loser', 'winner');
+          io.to(`${this.getPlayerOne.id}`).emit('score', this.getPlayerOne.score, this.getPlayerTwo.score);
+          io.to(`${this.getPlayerTwo.id}`).emit('score', this.getPlayerTwo.score, this.getPlayerOne.score);
+          io.to(`${this.getPlayerOne.id}`).emit('win', 'winner', 'loser');
+          io.to(`${this.getPlayerTwo.id}`).emit('win', 'loser', 'winner');
         } else {
-          io.to(`${this.getPlayerOne.id}`).emit('score', 'loser', 'winner');
-          io.to(`${this.getPlayerTwo.id}`).emit('score', 'winner', 'loser');
+          io.to(`${this.getPlayerOne.id}`).emit('score', this.getPlayerOne.score, this.getPlayerTwo.score);
+          io.to(`${this.getPlayerTwo.id}`).emit('score', this.getPlayerTwo.score, this.getPlayerOne.score);
+          io.to(`${this.getPlayerOne.id}`).emit('win', 'loser', 'winner');
+          io.to(`${this.getPlayerTwo.id}`).emit('win', 'winner', 'loser');
         }
         this.gameOver();
       }
