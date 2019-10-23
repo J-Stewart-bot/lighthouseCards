@@ -1,5 +1,6 @@
 const Goofspiel = require('./goofspiel/goofspiel');
 const War = require('./war/war');
+const Speed = require('./speed/speed');
 
 const games = {};
 let io;
@@ -34,6 +35,8 @@ const onConnect = function(socket) {
         game = new Goofspiel();
       } else if (gamename === 'War') {
         game = new War();
+      } else if (gamename === 'Speed') {
+        game = new Speed();
       }
 
       console.log('p1');
@@ -45,8 +48,16 @@ const onConnect = function(socket) {
     }
   });
 
-  socket.on('turn', function(username, card) {
-    games[socket.gameId].takeTurn(io, socket, username, card);
+  socket.on('start', function() {
+    games[socket.gameId].bothReady(io);
+  });
+
+  socket.on('pickup', function() {
+    games[socket.gameId].pickUp(io, socket);
+  });
+
+  socket.on('turn', function(card, display) {
+    games[socket.gameId].takeTurn(io, socket, card, display);
   });
 
   socket.on('inProgress', function(data, callback) {

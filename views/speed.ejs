@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Speed</title>
+
+    <link rel="stylesheet" href="/vendor/normalize-4.1.1.css" type="text/css"/>
+    <link rel="stylesheet" href="/vendor/border-box.css" type="text/css"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link rel="stylesheet" href="/styles/layout.css" type="text/css"/>
+
+
+  </head>
+
+  <body>
+    <% include ./partials/_header %>
+
+    <h1>Opponent: <span id="opponentName"></span></h1>
+    <div class="opponent">
+      <div class="container">
+        <div class="card">
+          <img src="/cards/blue_back.png"/>
+        </div>
+        <div class="card">
+          <img src="/cards/blue_back.png"/>
+        </div>
+        <div class="card">
+          <img src="/cards/blue_back.png"/>
+        </div>
+        <div class="card">
+          <img src="/cards/blue_back.png"/>
+        </div>
+        <div class="card">
+          <img src="/cards/blue_back.png"/>
+        </div>
+      </div>
+      <footer>
+        <span id="opponentScore">0</span>
+      </footer>
+    </div>
+
+    <div class="container prizes">
+      <div class="deck">
+        <img src="/cards/blue_back.png"/>
+      </div>
+      <div class="prize leftCard">
+        <img src="/cards/blue_back.png"/>
+      </div>
+      <div class="prize rightCard">
+        <img src="/cards/blue_back.png"/>
+      </div>
+      <div class="deck">
+        <img src="/cards/blue_back.png"/>
+      </div>
+    </div>
+
+    <div class="player">
+      <div class="container">
+        <div class="card deck" id="draw">
+          <img src="/cards/blue_back.png"/>
+        </div>
+      </div>
+      <header>
+        <span id="error" class="alert alert-danger" role="alert">Select card</span>
+        </span>
+        <button id="confirm" class="btn btn-outline-info">Confirm</button>
+        <span id="score">0</span>
+      </header>
+      <div class="container hand">
+        <div class="card" id="1">
+          <img src="/cards/blue_back.png"/>
+        </div>
+        <div class="card" id="2">
+          <img src="/cards/blue_back.png"/>
+        </div>
+        <div class="card" id="3">
+          <img src="/cards/blue_back.png"/>
+        </div>
+        <div class="card" id="4">
+          <img src="/cards/blue_back.png"/>
+        </div>
+        <div class="card" id="5">
+          <img src="/cards/blue_back.png"/>
+        </div>
+      </div>
+    </div>
+
+  </body>
+  <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.dev.js"></script>
+  <script type="text/javascript" src="/scripts/gameScript.js"></script>
+  <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script> -->
+</html>
