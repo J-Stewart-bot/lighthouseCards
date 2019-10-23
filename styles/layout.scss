@@ -32,6 +32,7 @@ body {
   display: flex;
   height: 100%;
   flex-direction: column;
+  // background-image: url('https://cdn.shopify.com/s/files/1/1279/9999/products/DSCF0696-697_2048x.jpg?v=1571438934');
 
 
 
@@ -101,7 +102,19 @@ body {
       width: 50%;
       align-self: center;
       display: flex;
-      justify-content: center;
+      justify-content: space-evenly;
+
+      #toggle {
+        visibility: hidden;
+      }
+    }
+  }
+
+  #smallRecord {
+    display: none;
+
+    td {
+      text-align: center;
     }
   }
 

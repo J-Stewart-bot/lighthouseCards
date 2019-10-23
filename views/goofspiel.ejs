@@ -14,7 +14,11 @@
   <body>
     <% include ./partials/_header %>
 
-    <h1>Opponent: <span id="opponentName"></span></h1>
+    <h1>Opponent:
+      <span id="opponentName"></span>
+      <span id="Wins"></span>
+      <span id="winRate"></span>
+    </h1>
     <div class="opponent">
       <div class="container">
         <div class="card">
@@ -59,7 +63,25 @@
       </div>
       <footer>
         <span id="opponentScore">0</span>
+        <button id="toggle" class="btn btn-outline-info">Record</button>
       </footer>
+    </div>
+
+    <div id="smallRecord">
+        <table>
+            <% for (let record of winnersRecords) { %>
+              <% if (record.game_id === 1) { %>
+                <tr id="<%= record.name %>">
+                  <td class="records">Wins:<%= record.wins %></td>
+                  <% for (let record2 of losersRecords) { %>
+                    <% if (record.name === record2.name && record2.game_id === 1) { %>
+                      <td class="records">Win Rate:<%= Math.round(Number(record.wins) / (Number(record2.loses) + Number(record.wins)) * 100) %>%</td>
+                    <% } %>
+                  <% } %>
+                </tr>
+              <% } %>
+            <% } %>
+          </table>
     </div>
 
     <div class="container prizes">

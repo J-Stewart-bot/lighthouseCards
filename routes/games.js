@@ -27,13 +27,44 @@ module.exports = (db) => {
       `SELECT * FROM games
       WHERE name = $1`, [req.params.id])
       .then(data => {
-        const game = data.rows[0];
-        let templateVars = {
-          username: req.session.user_id,
-          gamename: game.name,
-          gameId: game.id
-        };
-        res.render(`${req.params.id}`, templateVars);
+        return data;
+      })
+      .then(data => {
+        db.query(`
+        SELECT winners.name as name, COUNT(winners.name) AS wins, game_id
+        FROM records
+        JOIN winners ON records.id = winners.record_id
+        GROUP BY winners.name, game_id
+        ORDER BY
+          wins DESC;
+        `)
+        .then(winners => {
+          return winners;
+        })
+        .then(winners => {
+          db.query(`
+          SELECT losers.name as name, COUNT(losers.name) AS loses, game_id
+          FROM records
+          JOIN losers ON records.id = losers.record_id
+          GROUP BY losers.name, game_id
+          ORDER BY
+            loses DESC;
+          `)
+          .then(losers => {
+            const winnersRecords = winners.rows;
+            const losersRecords = losers.rows;
+            const game = data.rows[0];
+            console.log(winnersRecords, losersRecords)
+            let templateVars = {
+              username: req.session.user_id,
+              gamename: game.name,
+              gameId: game.id,
+              winnersRecords,
+              losersRecords
+            };
+            res.render(`${req.params.id}`, templateVars);
+          })
+        })
       })
       .catch(err => {
         res

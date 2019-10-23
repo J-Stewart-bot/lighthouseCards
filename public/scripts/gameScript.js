@@ -8,7 +8,10 @@ $(() => {
   socket.emit('username', username, gamename);
 
   socket.on('opponent', function(username, deck) {
+    console.log(username)
     $('#opponentName').text(username);
+    $('#toggle').css('visibility', 'visible');
+    $("table > tbody > tr").not([document.getElementById(`${username}`)]).remove()
 
     if (deck !== undefined) {
       for (const card in deck.suit) {
@@ -98,7 +101,6 @@ $(() => {
       }
     })
       .then(() => {
-
       })
       .fail((error) => {
         console.log(error.responseJSON.error);
@@ -153,4 +155,9 @@ $(() => {
       }
     });
   });
+
+  $("#toggle").click(function() {
+    $("#smallRecord").toggle()
+  });
+
 });
