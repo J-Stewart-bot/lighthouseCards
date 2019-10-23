@@ -2,6 +2,10 @@ $(() => {
   const socket = io.connect('localhost:8080');
   // const socket = io.connect('192.168.1.3:8080');
 
+  let leftCard;
+  let rightCard;
+  let hand;
+
   // ask username
   const username = $("#username").text();
   const gamename = $("#gamename").text();
@@ -9,16 +13,20 @@ $(() => {
 
   socket.on('opponent', function(username, deck) {
     $('#opponentName').text(username);
-
+    hand = deck;
     if (deck !== undefined) {
-      for (const card in deck.suit) {
-        console.log(card);
-        $(`#${Number(card) + 1} > img`).attr('src', `/cards/${deck.suit[card].img}`);
+      for (const card in deck) {
+        $(`#${Number(card) + 1} > img`).attr('src', `/cards/${deck[card].img}`);
+        $(`#${Number(card) + 1}`).attr('id', `${deck[card].img}`);
       }
     }
   });
 
-  socket.on('turn', function(username) {
+  socket.on('turn', function(start) {
+    if (start) {
+      $('#confirm').text('Start');
+    }
+
     $('#confirm').css('visibility', 'visible');
     document.title = "!!";
   });
@@ -38,8 +46,11 @@ $(() => {
   });
 
   socket.on('show', function(yourCard, opponentCard) {
-    $('.yourCard > img').attr('src', `/cards/${yourCard}`);
-    $('.opponentCard > img').attr('src', `/cards/${opponentCard}`);
+    leftCard = opponentCard;
+    rightCard = yourCard;
+    console.log(leftCard);
+    $('.rightCard > img').attr('src', `/cards/${rightCard.img}`);
+    $('.leftCard > img').attr('src', `/cards/${leftCard.img}`);
   });
 
   socket.on('score', function(p1, p2) {
@@ -49,6 +60,32 @@ $(() => {
     let game = $('#gamename').text();
     if (game === 'Goofspiel') {
       $('.opponent > .container').find('div:first').remove();
+    }
+  });
+
+  socket.on('draw', function(card) {
+    const newCard = $("<div>").addClass("card").attr('id', `${card.img}`);
+
+    const markup = `
+      <img src=/cards/${card.img}>
+    `;
+
+    $(newCard).append(markup);
+
+    $('.player > .hand').append(newCard)
+    hand.push(card);
+
+    // add card to hand
+  })
+
+  socket.on('remove', function(removeCard) {
+    for (const card in hand) {
+      if (hand[card].img === removeCard.img) {
+        hand.splice(card, 1);
+        console.log(hand);
+        console.log(removeCard.img);
+        $(`#${(removeCard.img).replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )}`).remove();
+      }
     }
   });
 
@@ -105,9 +142,44 @@ $(() => {
       });
   });
 
+  $('.leftCard').click(() => {
+    selected = $('.player > .container').find('.selected').attr('id');
+
+    for (const card in hand) {
+      if (selected === hand[card].img) {
+        socket.emit('turn', hand[card], leftCard);
+      }
+    }
+  });
+
+
+  $('.rightCard').click(() => {
+    selected = $('.player > .container').find('.selected').attr('id');
+
+    for (const card in hand) {
+      if (selected === hand[card].img) {
+        socket.emit('turn', hand[card], rightCard);
+      }
+    }
+  });
+
+  $('#draw').click(() => {
+    if (hand.length < 5) {
+      socket.emit('pickup');
+    }
+  })
+
   $('#confirm').click(() => {
     let game = $('#gamename').text();
     let card;
+
+    let button = $('#confirm').text();
+
+    if (button === 'Start') {
+      socket.emit('start');
+
+      $('#confirm').text('Confirm');
+    }
 
     if (game === 'Goofspiel') {
       card = $('.player > .container').find('.selected').remove().attr('id');
@@ -119,7 +191,7 @@ $(() => {
       $('#confirm').css('visibility', 'hidden');
       $('#error').css('visibility', 'hidden');
       document.title = "Game";
-      socket.emit('turn', username, Number(card));
+      socket.emit('turn', Number(card));
     } else {
       $('#error').css('visibility', 'visible');
     }
@@ -129,14 +201,14 @@ $(() => {
     window.location.href = "/";
   });
 
-  $('.player > .container > .card').click(function() {
-    let clicked = $(`#${this.id}`).hasClass("selected");
-    $(".card").removeClass("selected");
-    if (clicked) {
-      $(`#${this.id}`).removeClass("selected");
-      clicked = false;
+  $('.player > .hand').click(function() {
+    let clicked = $(event.target).parent();
+
+    if (!clicked.hasClass('selected')) {
+      $(".card").removeClass("selected");
+      $(clicked).addClass("selected");
     } else {
-      $(`#${this.id}`).addClass("selected");
+      $(".card").removeClass("selected");
     }
   });
 

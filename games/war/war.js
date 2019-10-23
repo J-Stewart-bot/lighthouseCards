@@ -69,7 +69,7 @@ class War {
     io.to(this.getPlayerOne.id).emit('turn', this.getPlayerTwo.username);
   }
 
-  takeTurn(io, socket, username) {
+  takeTurn(io, socket) {
     if (this.getPlayerOne.card === undefined) {
       this.getPlayerOne.card = this.getPlayerOne.cards.shift();
       this.getPlayerOne.bet.unshift(this.getPlayerOne.card);
@@ -93,8 +93,8 @@ class War {
 
       io.to(`${this.getPlayerOne.id}`).emit('score', this.getPlayerOne.cards.length, this.getPlayerTwo.cards.length);
       io.to(`${this.getPlayerTwo.id}`).emit('score', this.getPlayerTwo.cards.length, this.getPlayerOne.cards.length);
-      io.to(`${this.getPlayerOne.id}`).emit('show', this.getPlayerOne.card.img, this.getPlayerTwo.card.img);
-      io.to(`${this.getPlayerTwo.id}`).emit('show', this.getPlayerTwo.card.img, this.getPlayerOne.card.img);
+      io.to(`${this.getPlayerOne.id}`).emit('show', this.getPlayerOne.card, this.getPlayerTwo.card);
+      io.to(`${this.getPlayerTwo.id}`).emit('show', this.getPlayerTwo.card, this.getPlayerOne.card);
       this.getPlayerOne.card = undefined;
       if (this.isGameOver()) {
         if (this.getPlayerOne.score > this.getPlayerTwo.score) {
@@ -107,7 +107,7 @@ class War {
         this.gameOver();
       }
     }
-    socket.broadcast.to(socket.turn).emit('turn', username);
+    socket.broadcast.to(socket.turn).emit('turn');
   }
 
   left(io, socket) {

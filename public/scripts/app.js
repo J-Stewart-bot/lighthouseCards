@@ -14,5 +14,9 @@ $(() => {
       window.open('/games/Goofspiel');
     });
 
+    $(`.speed`).click(function() {
+      window.open('/games/Speed');
+    });
+
   });
 });
