@@ -26,14 +26,14 @@ class Deck {
     let newDeck = [];
 
     while (this.deck.length > 0) {
-      let num = Math.round(Math.random() * (this.deck.length - 1))
+      let num = Math.round(Math.random() * (this.deck.length - 1));
 
       newDeck = newDeck.concat(this.deck.splice(num, 1));
     }
 
     this.deck = newDeck;
   }
-};
+}
 
 module.exports = Deck;
 

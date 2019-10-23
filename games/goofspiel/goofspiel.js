@@ -128,9 +128,7 @@ class Goofspiel {
     } else {
       io.to(socket.id).emit('exit');
     }
-
   }
-
 }
 
 module.exports = Goofspiel;

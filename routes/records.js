@@ -71,59 +71,59 @@ module.exports = (db) => {
       RETURNING *;
       `, [req.body.gameId])
       .then(res => {
-        return res.rows[0].id
+        return res.rows[0].id;
       })
       .then(res => {
-        if(req.body.winners != undefined) {
+        if (req.body.winners !== undefined) {
           let query = `
             INSERT INTO winners (name, record_id)
-            VALUES`
+            VALUES`;
           let values = [];
           for (const win in req.body.winners) {
             values.push(`($${Number(win) + 1}, $${req.body.winners.length + 1})`);
           }
 
-          values = values.join(', ')
+          values = values.join(', ');
 
-          query = query.concat(' ', values)
-          query += ';'
+          query = query.concat(' ', values);
+          query += ';';
 
-          const someValue = req.body.winners
-          someValue.push(res)
+          const someValue = req.body.winners;
+          someValue.push(res);
 
           db.query(query, someValue)
-          .then(res => {
-          })
-          .catch(err => {
-            console.log(err);
-          })
+            .then(res => {
+            })
+            .catch(err => {
+              console.log(err);
+            });
         }
         return res;
       })
       .then(res => {
-        if(req.body.losers.length > 0) {
+        if (req.body.losers.length > 0) {
           let query = `
             INSERT INTO losers (name, record_id)
-            VALUES`
+            VALUES`;
           let values = [];
           for (const win in req.body.losers) {
             values.push(`($${Number(win) + 1}, $${req.body.losers.length + 1})`);
           }
 
-          values = values.join(', ')
+          values = values.join(', ');
 
-          query = query.concat(' ', values)
-          query += ';'
+          query = query.concat(' ', values);
+          query += ';';
 
-          const someValue = req.body.losers
-          someValue.push(res)
+          const someValue = req.body.losers;
+          someValue.push(res);
 
           db.query(query, someValue)
-          .then(res => {
-          })
-          .catch(err => {
-            console.log(err);
-          })
+            .then(res => {
+            })
+            .catch(err => {
+              console.log(err);
+            });
         }
       })
       .catch(err => {

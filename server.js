@@ -58,7 +58,6 @@ app.use("/api/widgets", widgetsRoutes(db));
 app.use("/games", gamesRoutes(db));
 app.use("/records", recordsRoutes(db));
 
-
 // Home page
 // Warning: avoid creating more routes in this file!
 // Separate them into separate routes files (see above).

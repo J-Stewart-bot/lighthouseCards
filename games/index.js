@@ -41,29 +41,27 @@ const onConnect = function(socket) {
       game.setPlayerOne(socket);
       socket.gameId = game.gameId;
 
-      games[game.gameId] = Object.assign( Object.create( Object.getPrototypeOf(game)), game);
+      games[game.gameId] = Object.assign(Object.create(Object.getPrototypeOf(game)), game);
     }
   });
 
   socket.on('turn', function(username, card) {
     games[socket.gameId].takeTurn(io, socket, username, card);
-  })
+  });
 
   socket.on('inProgress', function(data, callback) {
     callback(games[socket.gameId].inProgress);
-  })
+  });
 
   socket.on('left', function(username) {
     console.log(username, 'has left');
     games[socket.gameId].left(io, socket);
-  })
-
-
+  });
 };
 
 const listenForConnection = function(inOut) {
   io = inOut;
   io.on('connect', onConnect);
-}
+};
 
 module.exports = listenForConnection;

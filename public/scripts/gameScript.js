@@ -1,6 +1,4 @@
 $(() => {
-
-
   const socket = io.connect('localhost:8080');
   // const socket = io.connect('192.168.1.3:8080');
 
@@ -12,13 +10,13 @@ $(() => {
   socket.on('opponent', function(username, deck) {
     $('#opponentName').text(username);
 
-    if (deck != undefined) {
+    if (deck !== undefined) {
       for (const card in deck.suit) {
         console.log(card);
-        $(`#${Number(card) + 1} > img`).attr('src', `/cards/${deck.suit[card].img}`)
+        $(`#${Number(card) + 1} > img`).attr('src', `/cards/${deck.suit[card].img}`);
       }
     }
-  })
+  });
 
   socket.on('turn', function(username) {
     $('#confirm').css('visibility', 'visible');
@@ -40,7 +38,7 @@ $(() => {
   });
 
   socket.on('show', function(yourCard, opponentCard) {
-    $('.yourCard > img').attr('src', `/cards/${yourCard}`)
+    $('.yourCard > img').attr('src', `/cards/${yourCard}`);
     $('.opponentCard > img').attr('src', `/cards/${opponentCard}`);
   });
 
@@ -73,14 +71,13 @@ $(() => {
         url: "/records",
         data: { winners: [username], losers: [loser], gameId: game },
         success: () => {
-          console.log('did a thing')
         }
       })
         .then(() => {
 
         })
         .fail((error) => {
-          renderError(error.responseJSON.error);
+          console.log(error.responseJSON.error);
         });
     }
   });
@@ -89,7 +86,7 @@ $(() => {
     const loser = $('#opponentName').text();
     let game = $('#gamename').text();
 
-    if (game = 'Goofspiel') {
+    if (game === 'Goofspiel') {
       game = 1;
     }
 
@@ -98,16 +95,15 @@ $(() => {
       url: "/records",
       data: { winners: [], losers: [username, loser], gameId: game },
       success: () => {
-        console.log('did a thing')
       }
     })
       .then(() => {
 
       })
       .fail((error) => {
-        renderError(error.responseJSON.error);
+        console.log(error.responseJSON.error);
       });
-  })
+  });
 
   $('#confirm').click(() => {
     let game = $('#gamename').text();
@@ -127,7 +123,7 @@ $(() => {
     } else {
       $('#error').css('visibility', 'visible');
     }
-  })
+  });
 
   socket.on('exit', function() {
     window.location.href = "/";
@@ -142,7 +138,7 @@ $(() => {
     } else {
       $(`#${this.id}`).addClass("selected");
     }
-  })
+  });
 
   $('#exit').click(() => {
     socket.emit('inProgress', undefined, (res) => {
@@ -156,5 +152,5 @@ $(() => {
         socket.emit('left', username);
       }
     });
-  })
+  });
 });
