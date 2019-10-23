@@ -102,7 +102,7 @@ class Speed {
 
   takeTurn(io, socket, card, display) {
     // if display one off card
-    console.log(card);
+
     io.to(socket.id).emit('remove', card);
     // io.to(`${this.getPlayerOne.id}`).emit('show', this.getPlayerOne.display, this.getPlayerTwo.display);
     // io.to(`${this.getPlayerTwo.id}`).emit('show', this.getPlayerTwo.display, this.getPlayerOne.display);
