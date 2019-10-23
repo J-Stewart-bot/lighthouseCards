@@ -18,14 +18,30 @@ module.exports = (db) => {
       ORDER BY
         wins DESC;
       `)
-      .then(data => {
-        const records = data.rows;
-        let templateVars = {
-          username: req.session.user_id,
-          gamename: '',
-          records
-        };
-        res.render('../views/records', templateVars);
+      .then(winners => {
+        return winners;
+      })
+      .then(winners => {
+        db.query(`
+        SELECT losers.name as name, COUNT(losers.name) AS loses, game_id
+        FROM records
+        JOIN losers ON records.id = losers.record_id
+        GROUP BY losers.name, game_id
+        ORDER BY
+          loses DESC;
+        `)
+        .then(losers => {
+          const winnersRecords = winners.rows;
+          const losersRecords = losers.rows;
+          console.log(winnersRecords, losersRecords)
+          let templateVars = {
+            username: req.session.user_id,
+            gamename: '',
+            winnersRecords,
+            losersRecords
+          };
+          res.render('../views/records', templateVars);
+        })
       })
       .catch(err => {
         res
