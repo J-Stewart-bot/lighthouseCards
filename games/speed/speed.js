@@ -1,4 +1,5 @@
 const Deck = require('../deck/deck');
+const {checkCards} = require('../deck/orderCheck');
 
 class Speed {
   constructor() {
@@ -102,11 +103,23 @@ class Speed {
 
   takeTurn(io, socket, card, display) {
     // if display one off card
-    console.log(card);
-    io.to(socket.id).emit('remove', card);
-    // io.to(`${this.getPlayerOne.id}`).emit('show', this.getPlayerOne.display, this.getPlayerTwo.display);
-    // io.to(`${this.getPlayerTwo.id}`).emit('show', this.getPlayerTwo.display, this.getPlayerOne.display);
-
+    // console.log(card);
+    if(checkCards(card, display)) {
+      // console.log(display);
+      io.to(socket.id).emit('remove', card);
+      console.log('card', card)
+      console.log('this get p1 display', this.getPlayerOne.display)
+      console.log('display', display)
+      if (display.img === this.getPlayerOne.display.img) {
+        io.to(`${this.getPlayerOne.id}`).emit('show', card, this.getPlayerTwo.display);
+        io.to(`${this.getPlayerTwo.id}`).emit('show', this.getPlayerTwo.display, card);
+        this.getPlayerOne.display = card;
+      } else {
+        io.to(`${this.getPlayerOne.id}`).emit('show', this.getPlayerOne.display, card);
+        io.to(`${this.getPlayerTwo.id}`).emit('show', card, this.getPlayerOne.display);
+        this.getPlayerTwo.display = card;
+      }
+    }
 
 
 

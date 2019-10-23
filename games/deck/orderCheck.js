@@ -21,4 +21,4 @@ const checkPiles = function(hand, piles) {
   return false;
 }
 
-module.exports = checkPiles;
+module.exports = {checkPiles, checkCards};
