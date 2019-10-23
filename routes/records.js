@@ -11,22 +11,37 @@ const router  = express.Router();
 module.exports = (db) => {
   router.get("/", (req, res) => {
     db.query(`
-      SELECT winners.name as name, COUNT(winners.name) AS wins, COUNT(losers.name) as loses, game_id
+      SELECT winners.name as name, COUNT(winners.name) AS wins, game_id
       FROM records
       JOIN winners ON records.id = winners.record_id
-      JOIN losers ON records.id = losers.record_id
       GROUP BY winners.name, game_id
       ORDER BY
         wins DESC;
       `)
-      .then(data => {
-        const records = data.rows;
-        let templateVars = {
-          username: req.session.user_id,
-          gamename: '',
-          records
-        };
-        res.render('../views/records', templateVars);
+      .then(winners => {
+        return winners;
+      })
+      .then(winners => {
+        db.query(`
+        SELECT losers.name as name, COUNT(losers.name) AS loses, game_id
+        FROM records
+        JOIN losers ON records.id = losers.record_id
+        GROUP BY losers.name, game_id
+        ORDER BY
+          loses DESC;
+        `)
+        .then(losers => {
+          const winnersRecords = winners.rows;
+          const losersRecords = losers.rows;
+          console.log(winnersRecords, losersRecords)
+          let templateVars = {
+            username: req.session.user_id,
+            gamename: '',
+            winnersRecords,
+            losersRecords
+          };
+          res.render('../views/records', templateVars);
+        })
       })
       .catch(err => {
         res

@@ -21,16 +21,20 @@
       <tr>
         <th>Name</th>
         <th>Wins</th>
+        <th>Win Rate</th>
         <th>Archive</th>
-        <th>winrate</th>
       </tr>
-      <% for(let record of records) { %>
+      <% for (let record of winnersRecords) { %>
         <% if (record.game_id === 1) { %>
           <tr>
-            <td><%= record.name %></td>
-            <td><%= record.wins %></td>
-            <td><a href="/records/<%= record.name %>">Archive</a></td>
-            <td><%= Number(record.wins)/(Number(record.loses)+Number(record.wins)) %></td>
+            <td class="records"><%= record.name %></td>
+            <td class="records"><%= record.wins %></td>
+            <% for (let record2 of losersRecords) { %>
+              <% if (record.name === record2.name && record2.game_id === 1) { %>
+                <td class="records"><%= Math.round(Number(record.wins) / (Number(record2.loses) + Number(record.wins)) * 100) %>%</td>
+              <% } %>
+            <% } %>
+            <td class="records"><a href="/records/<%= record.name %>">Archive</a></td>
           </tr>
         <% } %>
       <% } %>
@@ -43,14 +47,20 @@
       <tr>
         <th>Name</th>
         <th>Wins</th>
+        <th>Win Rate</th>
         <th>Archive</th>
       </tr>
-      <% for(let record of records) { %>
+      <% for (let record of winnersRecords) { %>
         <% if (record.game_id === 2) { %>
           <tr>
-            <td><%= record.name %></td>
-            <td><%= record.wins %></td>
-            <td><a href="/records/<%= record.name %>">Archive</a></td>
+            <td class="records"><%= record.name %></td>
+            <td class="records"><%= record.wins %></td>
+            <% for (let record2 of losersRecords) { %>
+              <% if (record.name === record2.name && record2.game_id === 2) { %>
+                <td class="records"><%= Math.round(Number(record.wins) / (Number(record2.loses) + Number(record.wins)) * 100) %>%</td>
+              <% } %>
+            <% } %>
+            <td class="records"><a href="/records/<%= record.name %>">Archive</a></td>
           </tr>
         <% } %>
       <% } %>
