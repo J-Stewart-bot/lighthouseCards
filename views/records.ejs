@@ -22,6 +22,7 @@
         <th>Name</th>
         <th>Wins</th>
         <th>Archive</th>
+        <th>winrate</th>
       </tr>
       <% for(let record of records) { %>
         <% if (record.game_id === 1) { %>
@@ -29,6 +30,7 @@
             <td><%= record.name %></td>
             <td><%= record.wins %></td>
             <td><a href="/records/<%= record.name %>">Archive</a></td>
+            <td><%= Number(record.wins)/(Number(record.loses)+Number(record.wins)) %></td>
           </tr>
         <% } %>
       <% } %>
