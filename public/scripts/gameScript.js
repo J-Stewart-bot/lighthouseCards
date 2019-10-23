@@ -1,3 +1,11 @@
+const playCard = function(socket, selected, hand, pile) {
+  for (const card in hand) {
+    if (selected === hand[card].img) {
+      socket.emit('turn', hand[card], pile);
+    }
+  }
+};
+
 $(() => {
   const socket = io.connect('localhost:8080');
   // const socket = io.connect('192.168.1.3:8080');
@@ -55,6 +63,13 @@ $(() => {
     console.log(leftCard);
     $('.rightCard > img').attr('src', `/cards/${rightCard.img}`);
     $('.leftCard > img').attr('src', `/cards/${leftCard.img}`);
+
+    // check if can play
+    if (!checkPiles(hand, [leftCard, rightCard])) {
+      $('#confirm').text('Flip');
+
+      $('#confirm').css('visibility', 'visible');
+    }
   });
 
   socket.on('score', function(p1, p2) {
@@ -78,8 +93,6 @@ $(() => {
 
     $('.player > .hand').append(newCard)
     hand.push(card);
-
-    // add card to hand
   })
 
   socket.on('remove', function(removeCard) {
@@ -147,22 +160,17 @@ $(() => {
 
   $('.leftCard').click(() => {
     selected = $('.player > .container').find('.selected').attr('id');
-
-    for (const card in hand) {
-      if (selected === hand[card].img) {
-        socket.emit('turn', hand[card], leftCard);
-      }
+    score = Number($('#score').text())
+    if (score <= 5 || hand.length === 5) {
+      playCard(socket, selected, hand, leftCard);
     }
   });
-
 
   $('.rightCard').click(() => {
     selected = $('.player > .container').find('.selected').attr('id');
 
-    for (const card in hand) {
-      if (selected === hand[card].img) {
-        socket.emit('turn', hand[card], rightCard);
-      }
+    if (score <= 5 || hand.length === 5) {
+      playCard(socket, selected, hand, rightCard);
     }
   });
 
@@ -178,10 +186,11 @@ $(() => {
 
     let button = $('#confirm').text();
 
-    if (button === 'Start') {
+    if (button === 'Start' || button === 'Flip') {
       socket.emit('start');
 
       $('#confirm').text('Confirm');
+      $('#confirm').css('visibility', 'hidden');
     }
 
     if (game === 'Goofspiel') {
@@ -195,7 +204,7 @@ $(() => {
       $('#error').css('visibility', 'hidden');
       document.title = "Game";
       socket.emit('turn', Number(card));
-    } else {
+    } else if (game !== 'Speed') {
       $('#error').css('visibility', 'visible');
     }
   });
