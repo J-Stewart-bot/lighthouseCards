@@ -20,3 +20,5 @@ const checkPiles = function(hand, piles) {
   }
   return false;
 }
+
+module.exports = checkPiles;
