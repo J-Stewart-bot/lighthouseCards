@@ -103,7 +103,6 @@ class Speed {
 
   pickUp(io, socket) {
     io.to(socket.id).emit('draw', socket.deck.pop());
-    console.log(socket.deck);
   }
 
   takeTurn(io, socket, card, display) {

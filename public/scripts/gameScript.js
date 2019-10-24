@@ -31,7 +31,6 @@ $(() => {
   socket.emit('username', username, gamename);
 
   socket.on('opponent', function(username, deck) {
-    console.log(username)
     $('#opponentName').text(username);
     $('#toggle').css('visibility', 'visible');
     $("table > tbody > tr").not([document.getElementById(`${username}`)]).remove()
@@ -40,7 +39,11 @@ $(() => {
     if (deck !== undefined) {
       for (const card in deck) {
         $(`#${Number(card) + 1} > img`).attr('src', `/cards/${deck[card].img}`);
-        $(`#${Number(card) + 1}`).attr('id', `${deck[card].img}`);
+
+        let game = $('#gamename').text();
+        if (game === 'Speed') {
+          $(`#${Number(card) + 1}`).attr('id', `${deck[card].img}`);
+        }
       }
     }
   });
@@ -71,13 +74,17 @@ $(() => {
   socket.on('show', function(yourCard, opponentCard) {
     leftCard = opponentCard;
     rightCard = yourCard;
-    console.log(leftCard);
+
     $('.rightCard > img').attr('src', `/cards/${rightCard.img}`);
     $('.leftCard > img').attr('src', `/cards/${leftCard.img}`);
 
-    const score = $('#score').text();
-    if (score <= 5 || hand.length === 5) {
-      flip(hand, leftCard, rightCard);
+    let game = $('#gamename').text();
+    if (game === 'Speed') {
+
+      const score = $('#score').text();
+      if (score <= 5 || hand.length === 5) {
+        flip(hand, leftCard, rightCard);
+      }
     }
   });
 
@@ -117,7 +124,7 @@ $(() => {
 
     const score = $('#score').text();
 
-    if (score > 5) {
+    if (score >= 5) {
       flip(hand, leftCard, rightCard);
     }
   })
@@ -126,8 +133,6 @@ $(() => {
     for (const card in hand) {
       if (hand[card].img === removeCard.img) {
         hand.splice(card, 1);
-        console.log(hand);
-        console.log(removeCard.img);
         $(`#${(removeCard.img).replace( /(:|\.|\[|\]|,|=|@)/g, "\\$1" )}`).remove();
       }
     }
@@ -145,6 +150,8 @@ $(() => {
         game = 1;
       } else if (game === 'War') {
         game = 2;
+      } else if (game === 'Speed') {
+        game = 3;
       }
 
       $.ajax({
@@ -274,5 +281,10 @@ $(() => {
   $("#toggle").click(function() {
     $("#smallRecord").toggle()
   });
+
+  window.addEventListener('beforeunload', (event) => {
+    socket.emit('left', username);
+  });
+
 
 });

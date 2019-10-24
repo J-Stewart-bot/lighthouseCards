@@ -12,11 +12,12 @@ const onConnect = function(socket) {
     socket.bet = [];
     socket.score = 0;
 
+    console.log(games);
+
     for (const game in games) {
-      console.log('is game');
-      console.log(gamename, game.gameName);
-      console.log(game.getPlayerTwo);
-      if (games[game].getPlayerTwo === undefined && gamename === games[game].gamename) {
+      if (games[game].getPlayerOne.disconnected) {
+        delete games[game];
+      } else if (games[game].getPlayerTwo === undefined && gamename === games[game].gamename) {
         console.log('p2');
         games[game].setPlayerTwo(socket);
         socket.gameId = games[game].gameId;
@@ -61,9 +62,7 @@ const onConnect = function(socket) {
   });
 
   socket.on('inProgress', function(data, callback) {
-    console.log(data);
     if (data !== null) {
-      console.log('dun be here');
       games[socket.gameId].gameOver(io, socket);
     } else {
       callback(games[socket.gameId].inProgress);
@@ -72,7 +71,14 @@ const onConnect = function(socket) {
 
   socket.on('left', function(username) {
     console.log(username, 'has left');
-    games[socket.gameId].left(io, socket);
+
+    if (games[socket.gameId].getPlayerOne && games[socket.gameId].getPlayerTwo) {
+      games[socket.gameId].left(io, socket);
+    } else {
+      delete games[socket.gameId];
+
+      io.to(socket.id).emit('exit');
+    }
   });
 };
 
