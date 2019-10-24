@@ -7,15 +7,15 @@ $(() => {
       $("<button>").addClass(`${game.name.toLowerCase()} btn btn-outline-info game`).text(game.name).appendTo($("body"));
     }
     $(`.war`).click(function() {
-      window.open('/games/War');
+      window.open('/games/war');
     });
 
     $(`.goofspiel`).click(function() {
-      window.open('/games/Goofspiel');
+      window.open('/games/goofspiel');
     });
 
     $(`.speed`).click(function() {
-      window.open('/games/Speed');
+      window.open('/games/speed');
     });
 
   });
