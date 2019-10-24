@@ -5,7 +5,11 @@ This is a web server for hosting various card games! (Currently supports Goofspi
 
 ## Final Product
 
-
+!["Screenshot of homepage"](https://github.com/Justin-Lighthouse/lighthouseCards/blob/master/docs/homepage.png)
+!["Screenshot of Goofspiel"](https://github.com/Justin-Lighthouse/lighthouseCards/blob/master/docs/goofspiel.png)
+!["Screenshot of Speed"](https://github.com/Justin-Lighthouse/lighthouseCards/blob/master/docs/speed.png)
+!["Screenshot of Records"](https://github.com/Justin-Lighthouse/lighthouseCards/blob/master/docs/records.png)
+!["Screenshot of a Players Records"](https://github.com/Justin-Lighthouse/lighthouseCards/blob/master/docs/playerRecords.png)
 
 ## Getting Started
 
