@@ -12,8 +12,6 @@ const onConnect = function(socket) {
     socket.bet = [];
     socket.score = 0;
 
-    console.log(games);
-
     for (const game in games) {
       if (games[game].getPlayerOne.disconnected) {
         delete games[game];
@@ -71,8 +69,6 @@ const onConnect = function(socket) {
 
   socket.on('left', function(username) {
     console.log(username, 'has left');
-    console.log(games)
-    console.log(games[socket.gameId])
 
     if (games[socket.gameId].getPlayerOne && games[socket.gameId].getPlayerTwo) {
       games[socket.gameId].left(io, socket);

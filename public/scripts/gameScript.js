@@ -1,7 +1,7 @@
 
 const playCard = function(socket, selected, hand, pile) {
   for (const card in hand) {
-    if (selected === hand[card].img) {
+    if (selected === hand[card].img && pile !== undefined) {
       socket.emit('turn', hand[card], pile);
     }
   }
