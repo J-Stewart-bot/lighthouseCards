@@ -57,12 +57,12 @@ class Speed {
   }
 
   gameOver(io, socket) {
-    if (socket.id === this.playerOne.id) {
+    if (socket.id === this.getPlayerOne.id) {
       io.to(`${this.getPlayerOne.id}`).emit('win', 'winner', 'loser');
       io.to(`${this.getPlayerTwo.id}`).emit('win', 'loser', 'winner');
     } else {
-      io.to(`${this.getPlayerOne.id}`).emit('win', 'winner', 'loser');
-      io.to(`${this.getPlayerTwo.id}`).emit('win', 'loser', 'winner');
+      io.to(`${this.getPlayerOne.id}`).emit('win', 'loser', 'winner');
+      io.to(`${this.getPlayerTwo.id}`).emit('win', 'winner', 'loser');
     }
   }
 
@@ -122,7 +122,7 @@ class Speed {
         this.getPlayerTwo.display = card;
       }
 
-      if (socket.id === this.playerOne.id) {
+      if (socket.id === this.getPlayerOne.id) {
         io.to(`${this.getPlayerOne.id}`).emit('score', 1, 0);
         io.to(`${this.getPlayerTwo.id}`).emit('score', 0, 1);
       } else {
@@ -146,8 +146,6 @@ class Speed {
         io.to(`${this.getPlayerOne.id}`).emit('win', 'winner', 'loser');
         io.to(`${this.getPlayerTwo.id}`).emit('exit');
       }
-
-      this.gameOver();
     } else {
       io.to(socket.id).emit('exit');
     }

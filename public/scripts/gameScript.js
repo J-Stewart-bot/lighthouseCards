@@ -18,7 +18,7 @@ const flip = function(hand, leftCard, rightCard) {
 }
 
 $(() => {
-  const socket = io.connect('localhost:8080');
+  const socket = io.connect('192.168.12.74:8080');
   // const socket = io.connect('192.168.1.3:8080');
 
   let leftCard;
@@ -223,7 +223,7 @@ $(() => {
     }
 
     if (button === 'SPEED') {
-
+      socket.emit('inProgress', true)
     }
 
     if (game === 'Goofspiel') {

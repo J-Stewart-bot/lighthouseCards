@@ -61,10 +61,13 @@ const onConnect = function(socket) {
   });
 
   socket.on('inProgress', function(data, callback) {
-    if (data !== undefined) {
+    console.log(data);
+    if (data !== null) {
+      console.log('dun be here');
       games[socket.gameId].gameOver(io, socket);
+    } else {
+      callback(games[socket.gameId].inProgress);
     }
-    callback(games[socket.gameId].inProgress);
   });
 
   socket.on('left', function(username) {
