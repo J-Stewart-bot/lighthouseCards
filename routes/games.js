@@ -40,32 +40,32 @@ module.exports = (db) => {
         ORDER BY
           wins DESC;
         `)
-        .then(winners => {
-          return winners;
-        })
-        .then(winners => {
-          db.query(`
-          SELECT losers.name as name, COUNT(losers.name) AS loses, game_id
-          FROM records
-          JOIN losers ON records.id = losers.record_id
-          GROUP BY losers.name, game_id
-          ORDER BY
-            loses DESC;
-          `)
-          .then(losers => {
-            const winnersRecords = winners.rows;
-            const losersRecords = losers.rows;
-            const game = data.rows[0];
-            let templateVars = {
-              username: req.session.user_id,
-              gamename: game.name,
-              gameId: game.id,
-              winnersRecords,
-              losersRecords
-            };
-            res.render(`${req.params.id}`, templateVars);
+          .then(winners => {
+            return winners;
           })
-        })
+          .then(winners => {
+            db.query(`
+            SELECT losers.name as name, COUNT(losers.name) AS loses, game_id
+            FROM records
+            JOIN losers ON records.id = losers.record_id
+            GROUP BY losers.name, game_id
+            ORDER BY
+              loses DESC;
+            `)
+              .then(losers => {
+                const winnersRecords = winners.rows;
+                const losersRecords = losers.rows;
+                const game = data.rows[0];
+                let templateVars = {
+                  username: req.session.user_id,
+                  gamename: game.name,
+                  gameId: game.id,
+                  winnersRecords,
+                  losersRecords
+                };
+                res.render(`${req.params.id}`, templateVars);
+              });
+          });
       })
       .catch(err => {
         res

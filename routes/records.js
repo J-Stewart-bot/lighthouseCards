@@ -30,17 +30,17 @@ module.exports = (db) => {
         ORDER BY
           loses DESC;
         `)
-        .then(losers => {
-          const winnersRecords = winners.rows;
-          const losersRecords = losers.rows;
-          let templateVars = {
-            username: req.session.user_id,
-            gamename: '',
-            winnersRecords,
-            losersRecords
-          };
-          res.render('../views/records', templateVars);
-        })
+          .then(losers => {
+            const winnersRecords = winners.rows;
+            const losersRecords = losers.rows;
+            let templateVars = {
+              username: req.session.user_id,
+              gamename: '',
+              winnersRecords,
+              losersRecords
+            };
+            res.render('../views/records', templateVars);
+          });
       })
       .catch(err => {
         res
@@ -108,6 +108,7 @@ module.exports = (db) => {
 
           db.query(query, someValue)
             .then(res => {
+              return res;
             })
             .catch(err => {
               console.log(err);
@@ -135,6 +136,7 @@ module.exports = (db) => {
 
           db.query(query, someValue)
             .then(res => {
+              return res;
             })
             .catch(err => {
               console.log(err);

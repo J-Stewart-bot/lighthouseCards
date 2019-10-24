@@ -8,7 +8,7 @@ const checkCards = function(playerCard, pileCard) {
   } else {
     return false;
   }
-}
+};
 
 const checkPiles = function(hand, piles) {
   for (const playerCard of hand) {
@@ -19,4 +19,4 @@ const checkPiles = function(hand, piles) {
     }
   }
   return false;
-}
+};

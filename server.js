@@ -73,12 +73,12 @@ app.get("/", (req, res) => {
 app.post('/login', (req, res) => {
   req.session.user_id = req.body.username;
   res.redirect('/');
-})
+});
 
 app.post('/logout', (req, res) => {
   req.session = null;
   res.redirect('/');
-})
+});
 
 listenForConnection(io);
 
