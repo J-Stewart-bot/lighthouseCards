@@ -121,8 +121,6 @@ class War {
       }
 
       this.gameOver();
-    } else {
-      io.to(socket.id).emit('exit');
     }
   }
 }

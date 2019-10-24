@@ -282,4 +282,9 @@ $(() => {
     $("#smallRecord").toggle()
   });
 
+  window.addEventListener('beforeunload', (event) => {
+    socket.emit('left', username);
+  });
+
+
 });
