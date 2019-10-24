@@ -56,8 +56,14 @@ class Speed {
     return false;
   }
 
-  gameOver() {
-    this.inProgress = false;
+  gameOver(io, socket) {
+    if (socket.id === this.playerOne.id) {
+      io.to(`${this.getPlayerOne.id}`).emit('win', 'winner', 'loser');
+      io.to(`${this.getPlayerTwo.id}`).emit('win', 'loser', 'winner');
+    } else {
+      io.to(`${this.getPlayerOne.id}`).emit('win', 'winner', 'loser');
+      io.to(`${this.getPlayerTwo.id}`).emit('win', 'loser', 'winner');
+    }
   }
 
   start(io) {
@@ -74,9 +80,6 @@ class Speed {
     io.to(this.getPlayerOne.id).emit('opponent', this.getPlayerTwo.username, this.getPlayerOne.cards);
     io.to(this.getPlayerTwo.id).emit('opponent', this.getPlayerOne.username, this.playerTwo.cards);
 
-    io.to(`${this.getPlayerOne.id}`).emit('score', this.getPlayerOne.cards.length + this.getPlayerOne.deck.length, this.getPlayerTwo.cards.length + this.getPlayerTwo.deck.length);
-    io.to(`${this.getPlayerTwo.id}`).emit('score', this.getPlayerTwo.cards.length + this.getPlayerTwo.deck.length, this.getPlayerOne.cards.length + this.getPlayerOne.deck.length);
-
     io.to(`${this.getPlayerOne.id}`).emit('ready');
     io.to(`${this.getPlayerTwo.id}`).emit('ready');
 
@@ -91,6 +94,8 @@ class Speed {
 
       io.to(`${this.getPlayerOne.id}`).emit('show', this.getPlayerOne.display, this.getPlayerTwo.display);
       io.to(`${this.getPlayerTwo.id}`).emit('show', this.getPlayerTwo.display, this.getPlayerOne.display);
+
+      this.ready = false;
     } else {
       this.ready = true;
     }
@@ -103,22 +108,29 @@ class Speed {
 
   takeTurn(io, socket, card, display) {
     // if display one off card
-    // console.log(card);
     if(checkCards(card, display)) {
-      // console.log(display);
       io.to(socket.id).emit('remove', card);
-      console.log('card', card)
-      console.log('this get p1 display', this.getPlayerOne.display)
-      console.log('display', display)
       if (display.img === this.getPlayerOne.display.img) {
         io.to(`${this.getPlayerOne.id}`).emit('show', card, this.getPlayerTwo.display);
         io.to(`${this.getPlayerTwo.id}`).emit('show', this.getPlayerTwo.display, card);
+
         this.getPlayerOne.display = card;
       } else {
         io.to(`${this.getPlayerOne.id}`).emit('show', this.getPlayerOne.display, card);
         io.to(`${this.getPlayerTwo.id}`).emit('show', card, this.getPlayerOne.display);
+
         this.getPlayerTwo.display = card;
       }
+
+      if (socket.id === this.playerOne.id) {
+        io.to(`${this.getPlayerOne.id}`).emit('score', 1, 0);
+        io.to(`${this.getPlayerTwo.id}`).emit('score', 0, 1);
+      } else {
+        io.to(`${this.getPlayerOne.id}`).emit('score', 0, 1);
+        io.to(`${this.getPlayerTwo.id}`).emit('score', 1, 0);
+      }
+
+      this.ready = false;
     }
 
 

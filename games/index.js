@@ -61,6 +61,9 @@ const onConnect = function(socket) {
   });
 
   socket.on('inProgress', function(data, callback) {
+    if (data !== undefined) {
+      games[socket.gameId].gameOver(io, socket);
+    }
     callback(games[socket.gameId].inProgress);
   });
 

@@ -1,3 +1,4 @@
+
 const playCard = function(socket, selected, hand, pile) {
   for (const card in hand) {
     if (selected === hand[card].img) {
@@ -5,6 +6,16 @@ const playCard = function(socket, selected, hand, pile) {
     }
   }
 };
+
+const flip = function(hand, leftCard, rightCard) {
+  $('#confirm').css('visibility', 'hidden');
+  // check if can play
+  if (!checkPiles(hand, [leftCard, rightCard])) {
+    $('#confirm').text('Flip');
+
+    $('#confirm').css('visibility', 'visible');
+  }
+}
 
 $(() => {
   const socket = io.connect('localhost:8080');
@@ -64,19 +75,29 @@ $(() => {
     $('.rightCard > img').attr('src', `/cards/${rightCard.img}`);
     $('.leftCard > img').attr('src', `/cards/${leftCard.img}`);
 
-    // check if can play
-    if (!checkPiles(hand, [leftCard, rightCard])) {
-      $('#confirm').text('Flip');
-
-      $('#confirm').css('visibility', 'visible');
+    const score = $('#score').text();
+    if (score <= 5 || hand.length === 5) {
+      flip(hand, leftCard, rightCard);
     }
   });
 
   socket.on('score', function(p1, p2) {
-    $('#score').text(p1);
-    $('#opponentScore').text(p2);
-
     let game = $('#gamename').text();
+
+    if (game === 'Speed') {
+      $('#score').text($('#score').text() - p1);
+      $('#opponentScore').text($('#opponentScore').text() - p2);
+
+      const score = $('#score').text();
+      if (score <= 0) {
+        $('#confirm').text('SPEED');
+        $('#confirm').css('visibility', 'visible');
+      }
+    } else {
+      $('#score').text(p1);
+      $('#opponentScore').text(p2);
+    }
+
     if (game === 'Goofspiel') {
       $('.opponent > .container').find('div:first').remove();
     }
@@ -93,6 +114,12 @@ $(() => {
 
     $('.player > .hand').append(newCard)
     hand.push(card);
+
+    const score = $('#score').text();
+
+    if (score > 5) {
+      flip(hand, leftCard, rightCard);
+    }
   })
 
   socket.on('remove', function(removeCard) {
@@ -161,6 +188,7 @@ $(() => {
   $('.leftCard').click(() => {
     selected = $('.player > .container').find('.selected').attr('id');
     score = Number($('#score').text())
+
     if (score <= 5 || hand.length === 5) {
       playCard(socket, selected, hand, leftCard);
     }
@@ -168,6 +196,7 @@ $(() => {
 
   $('.rightCard').click(() => {
     selected = $('.player > .container').find('.selected').attr('id');
+    score = Number($('#score').text())
 
     if (score <= 5 || hand.length === 5) {
       playCard(socket, selected, hand, rightCard);
@@ -191,6 +220,10 @@ $(() => {
 
       $('#confirm').text('Confirm');
       $('#confirm').css('visibility', 'hidden');
+    }
+
+    if (button === 'SPEED') {
+
     }
 
     if (game === 'Goofspiel') {
