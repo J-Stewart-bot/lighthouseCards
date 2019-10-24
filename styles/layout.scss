@@ -4,27 +4,7 @@ html {
 }
 
 .bg-success {
-  // background-color: #17a2b8!important;
-  animation: colorchange 50s; /* animation-name followed by duration in seconds*/
-         /* you could also use milliseconds (ms) or something like 2.5s */
-  -webkit-animation: colorchange 50s; /* Chrome and Safari */
-  @keyframes colorchange
-    {
-      0%   {background: red;}
-      25%  {background: orange;}
-      50%  {background: yellow;}
-      75%  {background: green;}
-      100% {background: blue;}
-    }
-
-    @-webkit-keyframes colorchange /* Safari and Chrome - necessary duplicate */
-    {
-      0%   {background: red;}
-      25%  {background: orange;}
-      50%  {background: yellow;}
-      75%  {background: green;}
-      100% {background: blue;}
-    }
+  background-color: purple!important;
 }
 
 body {
@@ -34,19 +14,25 @@ body {
   flex-direction: column;
   // background-image: url('https://cdn.shopify.com/s/files/1/1279/9999/products/DSCF0696-697_2048x.jpg?v=1571438934');
 
-  background-image: url(https://us.123rf.com/450wm/yamabikay/yamabikay1612/yamabikay161200085/69448418-poker-table-felt-background-high-resolution-photo-.jpg?ver=6);
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
+  // background-image: url(https://us.123rf.com/450wm/yamabikay/yamabikay1612/yamabikay161200085/69448418-poker-table-felt-background-high-resolution-photo-.jpg?ver=6);
+  // background-position: center;
+  // background-repeat: no-repeat;
+  // background-size: cover;
+
+  background-color: #107a00;
+  background-image: url("https://www.transparenttextures.com/patterns/black-thread-light.png");
+  /* This is mostly intended for prototyping; please download the pattern and re-host for production environments. Thank you! */
 
   h1 {
     display: flex;
     justify-content: center;
     color: #000000;
     font-family: Chalkduster, fantasy;
+  }
 
-
-
+  h2 {
+    color: #000000;
+    font-family: Chalkduster, fantasy;
   }
 
   .game {
@@ -73,9 +59,10 @@ body {
   }
 
   tr:nth-child(even) {background-color: lightgray;}
+  tr:nth-child(odd) {background-color: whitesmoke;}
 
   #opponentName {
-    color: red;
+    color: purple;
   }
 
   .container {
@@ -115,7 +102,9 @@ body {
 
   #smallRecord {
     display: none;
-
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
     td {
       text-align: center;
     }

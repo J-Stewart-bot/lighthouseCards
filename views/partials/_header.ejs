@@ -3,18 +3,18 @@
       <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-            <a class="navbar-brand" href="#">Lighthouse Cards!</a>
+            <a class="navbar-brand" href="#">A Great Place To Waste Time!</a>
           </li>
           <li class="nav-item active">
             <span class="navbar-brand" id="gamename"><%= gamename %></span>
           </li>
           <% if (gamename !== "") { %>
             <li class="nav-item active">
-              <button class="navbar-brand btn btn-outline-danger" id="exit">Leave Game</button>
+              <button class="navbar-brand btn btn-danger" id="exit">Leave Game</button>
             </li>
           <% } else { %>
             <li class="nav-item active">
-                <a href="/records"><button class="btn btn-outline-dark my-2 my-sm-0">Records</button></a>
+                <a href="/records"><button class="btn btn-dark my-2 my-sm-0">Records</button></a>
             </li>
           <% } %>
         </ul>
@@ -30,7 +30,7 @@
                 <a id="username" class="nav-item nav-link"><%= username %></a>
               </li>
               <li class="nav-item active">
-                <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Logout</button>
+                <button class="btn btn-dark my-2 my-sm-0" type="submit">Logout</button>
               </li>
             </ul>
           </form>
@@ -39,7 +39,7 @@
             <li class="nav-item active">
               <form method="POST" action="/login" class="form-inline my-2 my-lg-0">
                 <input name="username">
-                <button type="submit">Login</button>
+                <button type="submit" class="btn btn-dark">Login</button>
               </form>
             </li>
           </ul>
