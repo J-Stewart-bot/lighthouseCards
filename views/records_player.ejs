@@ -54,6 +54,26 @@
       <% } %>
     </table>
 
+    <br>
+
+    <h2>Speed</h2>
+    <table>
+      <tr>
+        <th>Winner</th>
+        <th>Loser</th>
+        <th>Date</th>
+      </tr>
+      <% for(let record of records) { %>
+        <% if (record.game === 'Speed') { %>
+          <tr>
+            <td><%= record.winner %></td>
+            <td><%= record.loser %></td>
+            <td><%= record.date %></td>
+          </tr>
+        <% } %>
+      <% } %>
+    </table>
+
   </body>
   <script type="text/javascript" src="/vendor/jquery-3.0.0.js"></script>
   <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script> -->
