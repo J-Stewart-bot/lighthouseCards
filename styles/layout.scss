@@ -35,6 +35,19 @@ body {
     font-family: Chalkduster, fantasy;
   }
 
+  .rules {
+    align-self: center;
+    position: absolute;
+    bottom: 5px;
+
+    a {
+      color: white;
+    }
+
+  }
+
+
+
   .game {
     width: 25%;
     display: flex;
