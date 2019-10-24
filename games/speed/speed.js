@@ -64,6 +64,8 @@ class Speed {
       io.to(`${this.getPlayerOne.id}`).emit('win', 'loser', 'winner');
       io.to(`${this.getPlayerTwo.id}`).emit('win', 'winner', 'loser');
     }
+
+    this.inProgress = false;
   }
 
   start(io) {
@@ -142,9 +144,6 @@ class Speed {
     } else {
       io.to(socket.id).emit('invalid');
     }
-
-
-
   }
 
   left(io, socket) {
@@ -156,6 +155,8 @@ class Speed {
         io.to(`${this.getPlayerOne.id}`).emit('win', 'winner', 'loser');
         io.to(`${this.getPlayerTwo.id}`).emit('exit');
       }
+
+      this.inProgress = false;
     } else {
       io.to(socket.id).emit('exit');
     }
