@@ -250,7 +250,7 @@ $(() => {
   });
 
   socket.on('exit', function() {
-    window.location.href = "/";
+
   });
 
   $('.player > .hand').click(function() {
@@ -270,10 +270,10 @@ $(() => {
         const response = confirm("Are you sure you want to leave?");
 
         if (response) {
-          socket.emit('left', username);
+          window.location.href = "/";
         }
       } else {
-        socket.emit('left', username);
+        window.location.href = "/";
       }
     });
   });

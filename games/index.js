@@ -71,6 +71,8 @@ const onConnect = function(socket) {
 
   socket.on('left', function(username) {
     console.log(username, 'has left');
+    console.log(games)
+    console.log(games[socket.gameId])
 
     if (games[socket.gameId].getPlayerOne && games[socket.gameId].getPlayerTwo) {
       games[socket.gameId].left(io, socket);
