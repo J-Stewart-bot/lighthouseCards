@@ -66,7 +66,7 @@ class War {
     io.to(`${this.getPlayerOne.id}`).emit('score', this.getPlayerOne.cards.length, this.getPlayerTwo.cards.length);
     io.to(`${this.getPlayerTwo.id}`).emit('score', this.getPlayerTwo.cards.length, this.getPlayerOne.cards.length);
 
-    io.to(this.getPlayerOne.id).emit('turn', this.getPlayerTwo.username);
+    io.to(this.getPlayerOne.id).emit('turn');
   }
 
   takeTurn(io, socket) {
