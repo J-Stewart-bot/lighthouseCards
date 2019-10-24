@@ -48,19 +48,25 @@ const onConnect = function(socket) {
   });
 
   socket.on('start', function() {
-    games[socket.gameId].bothReady(io);
+    if (games[socket.gameId] && games[socket.gameId].inProgress) {
+      games[socket.gameId].bothReady(io);
+    }
   });
 
   socket.on('pickup', function() {
-    games[socket.gameId].pickUp(io, socket);
+    if (games[socket.gameId] && games[socket.gameId].inProgress) {
+      games[socket.gameId].pickUp(io, socket);
+    }
   });
 
   socket.on('turn', function(card, display) {
-    games[socket.gameId].takeTurn(io, socket, card, display);
+    if (games[socket.gameId] && games[socket.gameId].inProgress) {
+      games[socket.gameId].takeTurn(io, socket, card, display);
+    }
   });
 
   socket.on('inProgress', function(data, callback) {
-    if (data !== null) {
+    if (games[socket.gameId] && data !== null) {
       games[socket.gameId].gameOver(io, socket);
     } else {
       callback(games[socket.gameId].inProgress);
@@ -70,7 +76,7 @@ const onConnect = function(socket) {
   socket.on('left', function(username) {
     console.log(username, 'has left');
 
-    if (games[socket.gameId].getPlayerOne && games[socket.gameId].getPlayerTwo) {
+    if (games[socket.gameId] && games[socket.gameId].getPlayerOne && games[socket.gameId].getPlayerTwo) {
       games[socket.gameId].left(io, socket);
     } else {
       delete games[socket.gameId];
