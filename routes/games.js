@@ -63,7 +63,7 @@ module.exports = (db) => {
               winnersRecords,
               losersRecords
             };
-            res.render(`${name}`, templateVars);
+            res.render(`${req.params.id}`, templateVars);
           })
         })
       })
