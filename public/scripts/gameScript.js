@@ -18,7 +18,7 @@ const flip = function(hand, leftCard, rightCard) {
 }
 
 $(() => {
-  const socket = io.connect('192.168.12.74:8080');
+  const socket = io.connect('https://wasting-time-lighthouse-labs.herokuapp.com');
   // const socket = io.connect('192.168.1.3:8080');
 
   let leftCard;
