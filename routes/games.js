@@ -23,11 +23,15 @@ module.exports = (db) => {
   });
 
   router.get("/:id", (req, res) => {
+    let name = req.params.id;
+    name = name[0].toUpperCase() + name.slice(1);
+    console.log(name);
     db.query(
       `SELECT * FROM games
-      WHERE name = $1`, [req.params.id])
+      WHERE name = $1`, [name])
       .then(data => {
         const game = data.rows[0];
+        console.log(data);
         let templateVars = {
           username: req.session.user_id,
           gamename: game.name,
