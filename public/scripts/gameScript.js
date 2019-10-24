@@ -192,27 +192,53 @@ $(() => {
       });
   });
 
+  socket.on('invalid', function() {
+    $('#error').text('Invalid Card');
+    $('#error').css('visibility', 'visible');
+  })
+
   $('.leftCard').click(() => {
     selected = $('.player > .container').find('.selected').attr('id');
-    score = Number($('#score').text())
+    score = Number($('#score').text());
+    let game = $('#gamename').text();
 
-    if (score <= 5 || hand.length === 5) {
-      playCard(socket, selected, hand, leftCard);
+    $('#error').css('visibility', 'hidden');
+    if (selected != undefined) {
+      if (score <= 5 || hand.length === 5) {
+        playCard(socket, selected, hand, leftCard);
+      } else if (game === 'Speed') {
+        console.log('HERE')
+        if (score >= 5 && hand.length < 5) {
+          $('#error').text('Draw Card');
+          $('#error').css('visibility', 'visible');
+        }
+      }
     }
   });
 
   $('.rightCard').click(() => {
     selected = $('.player > .container').find('.selected').attr('id');
-    score = Number($('#score').text())
+    score = Number($('#score').text());
+    let game = $('#gamename').text();
 
-    if (score <= 5 || hand.length === 5) {
-      playCard(socket, selected, hand, rightCard);
+    $('#error').css('visibility', 'hidden');
+    if (selected != undefined) {
+      if (score <= 5 || hand.length === 5) {
+        playCard(socket, selected, hand, rightCard);
+      } else if (game === 'Speed') {
+        console.log('HERE')
+        if (score >= 5 && hand.length < 5) {
+          $('#error').text('Draw Card');
+          $('#error').css('visibility', 'visible');
+        }
+      }
     }
   });
 
   $('#draw').click(() => {
     if (hand.length < 5) {
       socket.emit('pickup');
+      $('#error').css('visibility', 'hidden');
     }
   })
 
