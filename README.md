@@ -1,4 +1,4 @@
-### A Great Place to Waste Time!
+# A Great Place to Waste Time!
 =========
 
 This is a web server for hosting various card games! (Currently supports Goofspiel, War and Speed). It uses a combination of HTML5, jQuery, AJAX and Socket.io to host and track multiple games for multiple users and record the results of those games. it also provides some statistics about games and players.
