@@ -68,7 +68,7 @@ const onConnect = function(socket) {
   socket.on('inProgress', function(data, callback) {
     if (games[socket.gameId] && data !== null) {
       games[socket.gameId].gameOver(io, socket);
-    } else {
+    } else if (games[socket.gameId]) {
       callback(games[socket.gameId].inProgress);
     }
   });
