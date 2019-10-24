@@ -207,7 +207,6 @@ $(() => {
       if (score <= 5 || hand.length === 5) {
         playCard(socket, selected, hand, leftCard);
       } else if (game === 'Speed') {
-        console.log('HERE')
         if (score >= 5 && hand.length < 5) {
           $('#error').text('Draw Card');
           $('#error').css('visibility', 'visible');
@@ -226,7 +225,6 @@ $(() => {
       if (score <= 5 || hand.length === 5) {
         playCard(socket, selected, hand, rightCard);
       } else if (game === 'Speed') {
-        console.log('HERE')
         if (score >= 5 && hand.length < 5) {
           $('#error').text('Draw Card');
           $('#error').css('visibility', 'visible');

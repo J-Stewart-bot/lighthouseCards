@@ -33,7 +33,6 @@ module.exports = (db) => {
         .then(losers => {
           const winnersRecords = winners.rows;
           const losersRecords = losers.rows;
-          console.log(winnersRecords, losersRecords)
           let templateVars = {
             username: req.session.user_id,
             gamename: '',
