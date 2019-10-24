@@ -248,7 +248,7 @@ $(() => {
 
   $('.player > .hand').click(function() {
     let clicked = $(event.target).parent();
-
+    $('#error').css('visibility', 'hidden');
     if (!clicked.hasClass('selected')) {
       $(".card").removeClass("selected");
       $(clicked).addClass("selected");
