@@ -131,6 +131,8 @@ class Speed {
       }
 
       this.ready = false;
+    } else {
+      io.to(socket.id).emit('invalid');
     }
 
 
