@@ -5,4 +5,7 @@ VALUES ('Kevin', 1),
 ('Sarah', 4),
 ('Sarah', 5),
 ('Sarah', 6),
-('Fred', 7)
+('Fred', 7),
+('Sarah', 8),
+('Rachel', 9),
+('Steven', 10)

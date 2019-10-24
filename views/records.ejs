@@ -26,13 +26,18 @@
       </tr>
       <% for (let record of winnersRecords) { %>
         <% if (record.game_id === 1) { %>
+          <% let i = true %>
           <tr>
             <td class="records"><%= record.name %></td>
             <td class="records"><%= record.wins %></td>
             <% for (let record2 of losersRecords) { %>
               <% if (record.name === record2.name && record2.game_id === 1) { %>
+                <% i = false %>
                 <td class="records"><%= Math.round(Number(record.wins) / (Number(record2.loses) + Number(record.wins)) * 100) %>%</td>
               <% } %>
+            <% } %>
+            <% if (i) { %>
+              <td>100%</td>
             <% } %>
             <td class="records"><a href="/records/<%= record.name %>">Archive</a></td>
           </tr>
@@ -52,13 +57,49 @@
       </tr>
       <% for (let record of winnersRecords) { %>
         <% if (record.game_id === 2) { %>
+          <% let i = true %>
           <tr>
             <td class="records"><%= record.name %></td>
             <td class="records"><%= record.wins %></td>
             <% for (let record2 of losersRecords) { %>
               <% if (record.name === record2.name && record2.game_id === 2) { %>
+                <% i = false %>
                 <td class="records"><%= Math.round(Number(record.wins) / (Number(record2.loses) + Number(record.wins)) * 100) %>%</td>
               <% } %>
+            <% } %>
+            <% if (i) { %>
+              <td>100%</td>
+            <% } %>
+            <td class="records"><a href="/records/<%= record.name %>">Archive</a></td>
+          </tr>
+        <% } %>
+      <% } %>
+    </table>
+
+    <br>
+
+    <h2>Speed</h2>
+    <table>
+      <tr>
+        <th>Name</th>
+        <th>Wins</th>
+        <th>Win Rate</th>
+        <th>Archive</th>
+      </tr>
+      <% for (let record of winnersRecords) { %>
+        <% if (record.game_id === 3) { %>
+          <% let i = true %>
+          <tr>
+            <td class="records"><%= record.name %></td>
+            <td class="records"><%= record.wins %></td>
+            <% for (let record2 of losersRecords) { %>
+              <% if (record.name === record2.name && record2.game_id === 3) { %>
+                <% i = false %>
+                <td class="records"><%= Math.round(Number(record.wins) / (Number(record2.loses) + Number(record.wins)) * 100) %>%</td>
+              <% } %>
+            <% } %>
+            <% if (i) { %>
+              <td>100%</td>
             <% } %>
             <td class="records"><a href="/records/<%= record.name %>">Archive</a></td>
           </tr>
