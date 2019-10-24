@@ -42,11 +42,11 @@
     <div id="smallRecord">
       <table>
           <% for (let record of winnersRecords) { %>
-            <% if (record.game_id === 2) { %>
+            <% if (record.game_id === 3) { %>
               <tr id="<%= record.name %>">
                 <td class="records">Wins:<%= record.wins %></td>
                 <% for (let record2 of losersRecords) { %>
-                  <% if (record.name === record2.name && record2.game_id === 2) { %>
+                  <% if (record.name === record2.name && record2.game_id === 3) { %>
                     <td class="records">Win Rate:<%= Math.round(Number(record.wins) / (Number(record2.loses) + Number(record.wins)) * 100) %>%</td>
                   <% } %>
                 <% } %>

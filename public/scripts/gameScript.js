@@ -254,6 +254,7 @@ $(() => {
     }
 
     if (button === 'SPEED') {
+      $('#confirm').css('visibility', 'hidden');
       socket.emit('inProgress', true);
     }
 

@@ -89,6 +89,13 @@ class Speed {
 
   bothReady(io) {
     if (this.ready) {
+      if (this.getPlayerOne.draw <= 1 || this.getPlayerTwo.draw <= 1) {
+        let rebuild = this.getPlayerOne.draw;
+        rebuild = rebuild.concat(this.getPlayerTwo.draw);
+
+        this.getPlayerOne.draw = rebuild.splice(0, rebuild.length / 2);
+        this.getPlayerTwo.draw = rebuild;
+      }
       this.getPlayerOne.display = this.getPlayerOne.draw.pop();
       this.getPlayerTwo.display = this.getPlayerTwo.draw.pop();
 
@@ -114,11 +121,13 @@ class Speed {
         io.to(`${this.getPlayerTwo.id}`).emit('show', this.getPlayerTwo.display, card);
 
         this.getPlayerOne.display = card;
+        this.getPlayerOne.draw.unshift(card);
       } else {
         io.to(`${this.getPlayerOne.id}`).emit('show', this.getPlayerOne.display, card);
         io.to(`${this.getPlayerTwo.id}`).emit('show', card, this.getPlayerOne.display);
 
         this.getPlayerTwo.display = card;
+        this.getPlayerTwo.draw.unshift(card);
       }
 
       if (socket.id === this.getPlayerOne.id) {
