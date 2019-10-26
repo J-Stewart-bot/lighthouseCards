@@ -47,6 +47,18 @@ const onConnect = function(socket) {
     }
   });
 
+  socket.on('waiting', function(gameName) {
+    let waiting = 0;
+
+    for (const game in games) {
+      if (games[game].gamename === gameName && games[game].getPlayerTwo === undefined) {
+        waiting += 1;
+      }
+    }
+
+    io.to(socket.id).emit('wait', waiting, gameName);
+  });
+
   socket.on('start', function() {
     if (games[socket.gameId] && games[socket.gameId].inProgress) {
       games[socket.gameId].bothReady(io);

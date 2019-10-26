@@ -35,6 +35,10 @@ body {
     font-family: Chalkduster, fantasy;
   }
 
+  .wait {
+    margin: 3px;
+  }
+
   .rules {
     align-self: center;
     position: absolute;
@@ -115,6 +119,10 @@ body {
         visibility: hidden;
       }
     }
+  }
+
+  .score {
+    font-size: 25px;
   }
 
   #smallRecord {
