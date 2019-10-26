@@ -17,6 +17,7 @@ const flip = function(hand, leftCard, rightCard) {
   }
 };
 
+// Game interaction
 $(() => {
   const socket = io();
   // const socket = io.connect('192.168.1.3:8080');
